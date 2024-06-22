@@ -9,7 +9,7 @@ export const TeamsScreenList = () => {
     let imageHeight = deviceWidth / 2;
     return (
         <>
-             <View style={{ width: '96%', marginLeft: '2%', }}>
+             <View style={{ width: '96%', marginLeft: '2%', height:'100%' }}>
                 <View style={styles.sectionTitle}>
                     <Text style={styles.sectionTitleText}>Equips</Text>
                 </View>

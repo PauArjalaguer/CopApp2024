@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "testDb",
-    "slug": "testDb",
+    "name": "E.F.S. Masquefa",
+    "slug": "efs_masquefa",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pauarjalaguer.efs_masquefa"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "70f7a0c3-50e5-4430-80a1-64be840fc9a6"
+      }
     }
   }
 }

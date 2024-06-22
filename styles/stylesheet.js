@@ -9,11 +9,12 @@ module.exports = StyleSheet.create({
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
         overflow: 'hidden',
+        elevation:3
     },
-    sectionTitleText: { overflow: 'hidden', width: '100%', fontFamily: 'Jost700Bold', fontSize: 18, backgroundColor: '#0001fc', padding: 10, color: '#fff', textTransform: 'capitalize' },
+    sectionTitleText: { overflow: 'hidden', width: '100%', fontFamily: 'Jost700Bold', fontSize: 18, backgroundColor: '#41628b', padding:10, color: '#fff', textTransform: 'capitalize' },
     globalFlexStart: { alignSelf: 'flex-start' },
     globalFlexEnd: { alignSelf: 'flex-end' },
-    scrollView: { paddingVertical: 5 },
+    scrollView: { paddingVertical: 5, },
 
     //home
     homeScreenLeagueName: { flex: 1, fontFamily: 'Jost700Bold', elevation: 3, fontSize: 18, textAlign: 'center',  color: '#242424', 
@@ -30,7 +31,7 @@ module.exports = StyleSheet.create({
    
 
     //newsList
-    newsListContainer: { marginBottom: 7, paddingHorizontal: 0, flex: 1, flexDirection: 'row', paddingLeft: 10, borderWidth: 1, borderColor: '#ccc' },
+    newsListContainer: { marginBottom: 7, paddingHorizontal: 0, flex: 1, flexDirection: 'row', paddingLeft: 10, borderWidth: 1, borderColor: '#aaa', backgroundColor:'#fff' },
     newsListTouchable: {
         width: '100%',
 
@@ -86,27 +87,28 @@ module.exports = StyleSheet.create({
 
     //teamsList
     teamsListContainer: {
-        paddingHorizontal: 4, marginBottom: 7, borderWidth: 1, borderColor: '#ddd',
+        paddingHorizontal: 4, marginBottom: 7, borderWidth: 1, borderColor: '#41628b', 
     },
     teamsListContent: {
         flex: 1,
-        flexDirection: 'row',
-        padding: 10
+        flexDirection: 'row', 
+        padding: 8,
+       alignItems:'center', backgroundColor:'#ffffff'
        
     },
-    teamsListText: { fontSize: 16, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize', },
+    teamsListText: { fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#41628b', fontWeight:'bold' },
     teamsListImage: { width: 16, height: 16, alignItems: 'baseline' },
-    teamsLeagueListContainer: { paddingHorizontal: 4, marginBottom: 7, borderWidth: 1, borderColor: '#ddd', },
+    teamsLeagueListContainer: {  marginBottom: 7, borderWidth: 1, borderColor: '#41628b', },
     teamsLeagueListContent:
     {
         flex: 1,
-        flexDirection: 'row',
-        padding: 10
-      
+        flexDirection: 'row', 
+        padding: 8,
+       alignItems:'center', backgroundColor:'#ffffff'
 
     },
-    teamsLeagueListText: { fontSize: 16, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize' },
-    teamsLeagueListTextInactive: { fontSize: 16, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#999' },
+    teamsLeagueListText: { fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#41628b', fontWeight:'bold'  },
+    teamsLeagueListTextInactive: {fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#828282', fontWeight:'bold' },
     teamsPlayersListContainer: { paddingHorizontal: 5, paddingVertical: 5, width: '50%' },
     teamsPlayersListContainerSmall: { paddingHorizontal: 5, paddingVertical: 5, width: '100%' },
     teamsPlayersListContent:
@@ -146,31 +148,31 @@ module.exports = StyleSheet.create({
     matchesListContainer: { flex: 1, alignItems: 'center', paddingVertical: 5, paddingHorizontal: 4, },
   
     matchesListContent: {
+        alignItems: 'center', borderRadius: 5, backgroundColor: '#fff', elevation: 3, shadowColor: "#bbb", padding: 10,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.45,
+        shadowRadius: 3.84,backgroundColor:'#fff', color:'#fff'
+    },
+      
+    matchesListContentOlesa: {
         alignItems: 'center', borderRadius: 5, backgroundColor: '#fff', elevation: 3, shadowColor: "#000", padding: 10,
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.45,
-        shadowRadius: 3.84,
-    },
-      
-    matchesListContentOlesa: {
-        alignItems: 'center', borderRadius: 5, backgroundColor: '#fff', elevation: 3, shadowColor: "#0a0", padding: 10,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.45,
-        shadowRadius: 3.84,backgroundColor:'#0a0'
+        shadowRadius: 3.84,backgroundColor:'#fff', color:'#fff'
     },
     matchesListResultsColumn: { width: '15%', borderLeftWidth: 1, borderColor: '#dedede' },
     
     matchesListResultsColumnEmpty: { width: '15%', borderLeftWidth: 0, borderColor: '#fff' },
  
-    matchesListResult: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 16, textAlign: 'center', padding: 0, paddingTop: 7 },
-    matchesListTeam: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 16, marginLeft: 0, textTransform: 'capitalize' },
-    matchesListLogo: { width: 16, height: 16, alignItems: 'baseline' },
+    matchesListResult: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, textAlign: 'center', padding: 0, paddingTop: 7 },
+    matchesListTeam: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, marginLeft: 0, textTransform: 'capitalize' },
+    matchesListLogo: { width: 14, height: 14, alignItems: 'baseline', paddingTop:3 },
     matchesListInfoContainer: { width: '100%', flex: 1, flexDirection: 'row' }, 
     matchesListInfoContent: { width: '100%', flex: 1, width: '100%', marginTop: 10, paddingTop: 5, borderTopWidth: 1, borderTopColor: '#eee', },
     matchesListLeagueName: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, textAlign: 'left', marginBottom: 10, textTransform: 'capitalize' },

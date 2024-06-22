@@ -69,24 +69,23 @@ export default function App() {
     return (
       <>
         <StatusBar translucent backgroundColor="transparent" />
-        <ImageBackground source={require('./assets/images/appImages/app_back.png')}
-          style={{ width: '100%', height: '100%', resizeMode: 'contain', }}>
+        <ImageBackground source={require('./assets/images/appImages/app_back.jpg')}
+          style={{ width: '100%', height: '100%', resizeMode: 'contain',  }}>
           <NavigationContainer theme={navTheme}>
             <View style={styles.header}>
-              <View style={{ flex: 1, flexDirection: 'column', paddingTop: 44 }}>
+              <View style={{ flex: 1, flexDirection: 'column', paddingTop: 34 }}>
                 <Text style={styles.headerText}>
                   <Image style={styles.headerImage} source={require('./assets/images/appImages/logo.png')} />
                   &nbsp; E.F.S. Masquefa &nbsp;
                   <Image style={styles.headerImage} source={require('./assets/images/appImages/logo.png')} />
-
                 </Text>
               </View>
             </View>
             <Tab.Navigator
               initialRouteName="Home"
               inactiveColor="#646464"
-              activeColor="#242424"
-              barStyle={{ backgroundColor: '#fff', paddingTop: 3, color: 'white', borderTopWidth: 1, borderTopColor: '#0001fc', height: '12%' }}
+              activeColor="#41628b"
+              barStyle={{ backgroundColor: '#fff', paddingTop:0, color: 'white', borderTopWidth: 1, borderTopColor: '#41628b', height: '11%' }}
               screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, size, color }) => {
                   let iconName;
@@ -94,7 +93,7 @@ export default function App() {
                     iconName = 'home';
                     size = 20
                   } else if (route.name === "Matches") {
-                    iconName = 'skating';
+                    iconName = 'futbol';
                     size = 20
                   }
                   else if (route.name === "News") {
@@ -167,8 +166,8 @@ const Tab = createMaterialBottomTabNavigator();
 
 const styles = StyleSheet.create({
   header: { width: '100%', height: 90, justifyContent: 'center', alignItems: 'center', borderBottomColor: 'white', borderBottomWidth: 0, marginTop: 10, marginBottom: 15 },
-  headerText: { fontSize: 32, fontFamily: 'GalanoGrotesqueBold', color: 'white' },
-  headerImage: { width: 28, height: 28 },
+  headerText: { fontSize: 32, fontFamily: 'Jost700Bold', color: 'white' },
+  headerImage: { width: 30, height: 30 },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -176,6 +175,6 @@ const styles = StyleSheet.create({
   },
   tab: {},
 
-  tabBarLabel: { fontFamily: 'GalanoGrotesqueBold', color: '#0001fc', fontSize: 12, textTransform: 'uppercase' }
+  tabBarLabel: { fontFamily: 'Jost700Bold', color: '#41628b', fontSize: 10, textTransform: 'uppercase' }
 
 });

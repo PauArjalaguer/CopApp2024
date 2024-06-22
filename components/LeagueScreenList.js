@@ -1,56 +1,63 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 const styles = require('../styles/stylesheet');
 import { LeagueScreenListItems } from './LeagueScreenListItems'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import * as SQLite from 'expo-sqlite';
 export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
-    // console.log("LeagueScreenList: " + matchIdLeague);
+   
+    let [isLoadingClass, setIsLoadingClass] = useState(true);
+    let [isLoadingMatches, setIsLoadingMatches] = useState(true);
 
-    //let items = [{}];
-    /* if (Network.getIpAddressAsync()) {
-      const ufm = useFetchMatches();
-      items = ufm.data;
-     // console.log(items)
-    } */
-    let matchesArray, classificationArray = [];
     let [matches, setMatches] = useState([]);
     let [classification, setClassification] = useState([]);
+    let [visibleClassification, setVisibleClassification] = useState(0);
 
     let [reload, setReload] = useState(0);
     const fetchClassificationData = () => {
-       // fetch("http://clubolesapati.cat/API/apiClassificacionsPerId.php?top=1&idLeague=" + matchIdLeague)
-       fetch("http://jok.cat/API/classificationUrlToJson.php?url=https://www.fcf.cat/classificacio/2324/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr-6")
+        var classUrl = matchIdLeague.replace("calendari", "classificacio");
+       
+        fetch("http://jok.cat/API/classificationUrlToJson.php?url=" + classUrl)
             .then(response => {
-                console.log(response)
                 return response.json()
             })
             .then(data => {
                 setClassification(data);
-                // console.log(data);
+                setIsLoadingClass(false);
             })
     }
     const fetchMatchesData = () => {
-       // fetch("http://clubolesapati.cat/API/apiTotsElsPartits.php?top=1&idLeague=" + matchIdLeague)
-       fetch("http://jok.cat/API/leagueUrlToJson.php?url=https://www.fcf.cat/calendari/2324/futbol-sala/lliga-segona-divisio-infantil-futbol-sala/bcn-gr-6")
+        fetch("http://jok.cat/API/leagueUrlToJson.php?url=" + matchIdLeague)
             .then(response => {
-                console.log(response)
                 return response.json()
             })
             .then(data => {
                 setMatches(data);
-                //console.log(data); 
+                setIsLoadingMatches(false);
             })
+    }
+    const handleClassPress = (position) => {     
+        setVisibleClassification(position);
     }
     useEffect(() => {
         fetchClassificationData();
         fetchMatchesData();
     }, [reload])
 
-
     if (matches && classification) {
         return (
             <>
-                <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                {isLoadingClass ? <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{
+                    borderRadius: 5, backgroundColor: '#fff', padding: 4, width: '99%', margin: 5, marginTop: 5, marginBottom: 5, elevation: 3,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
+                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} />  Carregant dades</Text></View> : null} 
+                <View style={isLoadingClass ? { display: 'none' } : { width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{
                         borderRadius: 5, backgroundColor: '#fff', padding: 0, width: '99%', margin: 5, marginTop: 10, marginBottom: 5, elevation: 3,
                         shadowColor: "#000",
@@ -62,65 +69,127 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                         shadowRadius: 3.84,
                     }}>
                         <View style={{ flex: 1, flexDirection: 'row', }}>
-                            <Text style={{ fontFamily: 'Jost500Medium', color: '#424242', padding: 10, fontSize: 18, flex: 2 }}>Classificació </Text>
-                            <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost500Medium', color: '#424242', padding: 10, fontSize: 18, flex: 1 }}>Punts G E P</Text>
-                        </View>
-                        {classification?.map(c =>
-
-                            <View key={c.classId} style={{ alignSelf: 'stretch', flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#cdc' }}>
-                                <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', }}>{c.position}</Text>
-                                </View>
-                                <View style={{ flex: 5, alignSelf: 'flex-start', justifyContent: 'center' }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', textTransform: 'capitalize' }}>{c.teamName.toLowerCase()}</Text>
-                                </View>
-                                <View style={{ flex: 1, alignSelf: 'stretch', }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', }}>{c.points}</Text>
-                                </View>
-                                <View style={{ flex: 1, alignSelf: 'stretch', }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', }}>{c.won}</Text>
-                                </View >
-                                <View style={{ flex: 1, alignSelf: 'stretch', }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', }}>{c.draw}</Text>
-                                </View>
-                                <View style={{ flex: 1, alignSelf: 'stretch', }}>
-                                    <Text style={{ padding: 9, fontFamily: 'Jost500Medium', }}>{c.lost}</Text>
-                                </View>
-
+                            <View style={{ flex: 7 }}>
+                                <Text style={{ fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 2 }}>Classificació </Text>
                             </View>
+                            <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
+                                <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>
+                                </Text>
+                            </View>
+                            <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
+                                <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>
+                                    P </Text>
+                            </View>
+                            <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
+                                <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>
+                                </Text>
+                            </View>
+                        </View>
+
+                        {classification?.map(c => {
+                            let classColor = c.color;
+                            return (<>
+                                <View key={c.position} style={{ alignSelf: 'stretch', flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#cdc' }}>
+                                    <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', backgroundColor: classColor }}>
+                                        <Text style={{ padding: 6, fontFamily: 'Jost500Medium', fontSize: 13, fontWeight: 'bold', color: 'white' }}>{c.position}</Text>
+                                    </View>
+                                    <View style={{ flex: 7, alignSelf: 'flex-start', justifyContent: 'center' }}>
+                                        <TouchableOpacity onPress={() => {
+                                            handleClassPress(c.position)
+                                        }}><Text style={{ padding: 6, fontFamily: 'Jost500Medium', textTransform: 'capitalize', fontSize: 13, }}>{c.teamName.toLowerCase().substring(0, 35)}</Text></TouchableOpacity>
+                                    </View>
+                                    <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center' }}>
+                                        <Text style={{ padding: 6, fontFamily: 'Jost500Medium', fontSize: 13 }}>{c.points}</Text>
+                                    </View>
+                                    <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                        <TouchableOpacity onPress={() => {
+                                            handleClassPress(c.position)
+                                        }}>
+                                            <FontAwesome5 name="angle-double-down" style={{ paddingTop: 8, color: '#001fbc', fontSize: 16, display: visibleClassification == c.position ? 'none' : 'flex' }} />
+                                            <FontAwesome5 name="angle-double-up" style={{ paddingTop: 8, color: '#001fbc', fontSize: 16, display: visibleClassification !== c.position ? 'none' : 'flex' }} /></TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', backgroundColor: '#eee', borderTopWidth: 1, borderTopColor: '#cdc', display: visibleClassification == c.position ? 'flex' : 'none' }}>
+                                    <View style={{ flex: 1 }}></View>
+                                    <View style={{ flex: 10, flexDirection: 'row' }}>
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center' }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>PUNTS:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.points} </Text>
+                                        </View>
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>J:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.played}</Text>
+                                        </View >
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>G:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.won}</Text>
+                                        </View >
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-center', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>E:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.draw}</Text>
+                                        </View>
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>P:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.lost}</Text>
+                                        </View>
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>GF:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.gF}</Text>
+                                        </View>
+                                        <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>GC:</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.gC}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ flex: 1 }}></View>
+                                </View>
+                            </>)
+                        }
                         )}
                     </View>
                 </View>
-                <View style={styles.sectionTitle}><Text  style={styles.sectionTitleText}>Partits</Text></View>
-                {
-                    matches?.map(
-                        n => (
-                            <LeagueScreenListItems
-                                matchId={n.matchid}
-                                matchLocal={n.local}
-                                matchVisitor={n.visitor}
-                                matchComplexName={n.complexName}
-                                matchComplexAddress={n.complexAddress}
-                                matchDate={n.matchDate}
-                                matchHour={n.matchHour}
-                                matchFixture={n.fixture}
-                                matchLocalImage={n.localImage} matchVisitorImage={n.visitorImage}
-                                matchIdLeague={n.idleague}
-                                matchLeagueName={n.leagueName}
-                                matchGroupName={n.groupName}
-                                matchLocalResult={n.localResult}
-                                matchVisitorResult={n.visitorResult}
-                                key={n.matchId}
-                                matchDistance={n.distance}
-                                matchTravelTime={n.travelTime}
-                                matchMeteo={n.matchMeteo}
-                            ></LeagueScreenListItems>
 
+                <View style={styles.sectionTitle}><Text style={styles.sectionTitleText}>Partits</Text></View>
+                {isLoadingMatches ? <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{
+                    borderRadius: 5, backgroundColor: '#fff', padding: 4, width: '99%', margin: 5, marginTop: 5, marginBottom: 5, elevation: 3,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
+                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} />  Carregant dades</Text></View> : null}
+                <View style={isLoadingClass ? { display: 'none' } : null}>
+                    {
+                        matches?.map(
+                            n => (
+
+                                <LeagueScreenListItems
+                                    matchId={n.matchid}
+                                    matchLocal={n.local}
+                                    matchVisitor={n.visitor}
+                                    matchComplexName={n.complexName}
+                                    matchComplexAddress={n.complexAddress}
+                                    matchDate={n.matchDate}
+                                    matchHour={n.matchHour}
+                                    matchFixture={n.fixture}
+                                    matchLocalImage={n.localImage} matchVisitorImage={n.visitorImage}
+                                    matchIdLeague={n.idleague}
+                                    matchLeagueName={n.leagueName}
+                                    matchGroupName={n.groupName}
+                                    matchLocalResult={n.localResult}
+                                    matchVisitorResult={n.visitorResult}
+                                    key={n.local + n.visitor}
+                                    matchDistance={n.distance}
+                                    matchTravelTime={n.travelTime}
+                                    matchMeteo={n.matchMeteo}
+                                ></LeagueScreenListItems>
+                            )
                         )
-                    )
-
-                }
-
+                    }
+                </View>
             </>
         )
     } else {

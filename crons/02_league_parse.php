@@ -8,89 +8,58 @@ function printR($array)
     print_r($array);
     echo "</pre>";
 }
-//$searchTeam = ;
-$searchTeams = ['F.S. OLESA', 'E.F.S. MASQUEFA','MASQUEFA'];
-
+$searchTeams = ['F.S. OLESA', 'MASQUEFA'];
+//$searchTeams = ['MASQUEFA'];
+$leaguesWithTeams = array();
 function parseLeagues($url, $searchTeams, $mysqli)
 {
-echo "<h1>$url</h1>";
+
     $foundTeam = 0;
-    $url = str_replace("resultats", "calendari", $url);
+    $url = str_replace("resultats", "equipacions", $url);
+    $url = str_replace("calendari", "equipacions", $url);
+    echo "<h1>$url</h1>";
     $dom = new DOMDocument();
     $html = $dom->loadHTMLFile($url);
     $dom->preserveWhiteSpace = true;
     $select  = $dom->getElementsByTagName('select');
     $selectRounds = $select[2];
     $xpath = new DomXPath($dom);
-    $rounds = $xpath->query("//table[@class='calendaritable']");
-    $matches = [];
+    $teams = $xpath->query("//div[@class='equipacio-box']");
+    $teamsArray = array();
+    foreach ($teams as $team) {
+        if ($team->parentNode->tagName == 'a') {
+            $teamUrl = $team->parentNode->attributes[0]->nodeValue;
+            $t = explode("/", $teamUrl);
+            $teamCategory = $t[5];
+            $teamName = $team->parentNode->nodeValue;
 
-    foreach ($rounds as $round) {
-        $match = array();
-        $idRound = $round->childNodes[1]->childNodes[1]->childNodes[1]->nodeValue;
-        $matchDate = $round->childNodes[1]->childNodes[1]->childNodes[3]->nodeValue;
-        foreach ($round->childNodes[3]->childNodes as $match) {
-            $localName = $match->childNodes[0]->nodeValue;
-            $localNameLink = $match->childNodes[0]->childNodes[0]->attributes[0]->nodeValue;
-            $localNameImage = $match->childNodes[2]->childNodes[0]->childNodes[0]->attributes[0]->nodeValue;
-            $localResult = $match->childNodes[3]->nodeValue;
-            $visitorName = $match->childNodes[8]->nodeValue;
-            $visitorNameLink = $match->childNodes[6]->childNodes[0]->attributes[0]->nodeValue;
-            $visitorNameImage = $match->childNodes[6]->childNodes[0]->childNodes[0]->attributes[0]->nodeValue;
-            $visitorResult = $match->childNodes[5]->nodeValue;
-            // echo "<br />$localName $searchTeam";
             foreach ($searchTeams as $st) {
-                echo "<hr/ >Comparo equips $localName || $visitorName amb  $st || $localNameLink $visitorNameLink || $url";
-                if (str_contains($localName, $st)) {
-                    echo " -> Existeix $st";
-                    $spUrl = explode("/", $localNameLink);
-                    printR($spUrl);
-                    $sql = "insert into teams (categoryName, teamName,teamUrl) values ('" . $spUrl[5] . "','" . $spUrl[6] . "','$localNameLink') ON DUPLICATE KEY UPDATE  teamUrl='$localNameLink'";
-                  
-                  echo "<br />$sql";  $mysqli->query($sql);
-                    $spUrl = explode("/", $url);
-                    $sql = "insert into leagues (leagueName, leagueUrl,groupName,sportName) values ('" . $spUrl[6] . "','" . $url . "','" .  $spUrl[7] . "','" . $spUrl[5] . "') ON DUPLICATE KEY UPDATE leagueName='" . $spUrl[6] . "', leagueUrl='$url'";
-                    $mysqli->query($sql);
-
-                    $sql = "insert into teams_leagues (urlLeague, urlTeam) values ('" . $url . "','" . $localNameLink."') ON DUPLICATE KEY UPDATE urlTeam='" . $localNameLink . "', urlLeague='$url'";
-                    $mysqli->query($sql);
+                // echo "<hr/ >Comparo equip $teamName amb  $st";
+                if (str_contains($teamName, $st)) {
+                    echo "<hr /> $teamCategory $teamName " . $teamUrl;
+                    $$teamName = ['teamName' => trim($teamName)];
+                    $$teamName['teamCategory'] = $teamCategory;
+                    $$teamName['teamUrl'] = $teamUrl;
+                    $url = str_replace("equipacions", "calendari", $url);
+                    $$teamName['leagueUrl'] = $url;
+                    $l = explode("/", $teamUrl);
+                    $b = explode("-", $teamUrl);
+                    $n=count($b)-1;
+                    $$teamName['idTeam'] = $l[5]."_".$b[$n];
+                    array_push($teamsArray, $$teamName);
                 }
             }
-
-            $match = ['idRound' => $idRound];
-
-            $match['matchDate'] = $matchDate;
-            $match['localName'] = $localName;
-
-            $match['localNameLink'] = $localNameLink;
-            $match['localNameImage'] = $localNameImage;
-            $match['localResult'] = $localResult;
-
-            $match['visitorName'] = $visitorName;
-            $match['visitorNameLink'] = $visitorNameLink;
-            $match['visitorNameImage'] = $visitorNameImage;
-            $match['visitorResult'] = $visitorResult;
-            array_push($matches, $match);
         }
     }
-    //print_r(json_encode($matches));
-    $jsonURL = str_replace("/", "-", str_replace("https://www.fcf.cat/calendari/2324/futbol-sala/", "", $url));
 
-    // echo $jsonURL;
-
-    if ($foundTeam == 1) {
-
-        // printR($leaguesWithTeams);
-        file_put_contents("jsons/$jsonURL.json", json_encode($matches));
-        return $url;
-    }
+    return $teamsArray;
 }
 
-$j = file_get_contents("fcfGroups.json");
+$j = file_get_contents("realfcfGroups.json");
 //printR(json_decode($j));
 $a = 0;
 foreach (json_decode($j) as $league) {
-    if ($a < 11111150) {
+    if ($a < 1155) {
         $lwt = parseLeagues($league, $searchTeams, $mysqli);
         if ($lwt) {
             array_push($leaguesWithTeams, $lwt);
@@ -98,7 +67,30 @@ foreach (json_decode($j) as $league) {
     }
     $a++;
 }
-$searchTeam = str_replace(".", "", strtolower($searchTeam));
-$searchTeam = str_replace(" ", "-", $searchTeam);
-file_put_contents("lligues_$searchTeam.json", json_encode($leaguesWithTeams));
-printR(get_defined_vars());
+foreach ($searchTeams as $st) {
+    $teamLeagues = array();
+    $st = str_replace(".", "", strtolower($st));
+    $st = str_replace(" ", "-", $st);
+    echo "<br /><br/>Busco en els arrays les lligues de $st";
+    foreach ($leaguesWithTeams as $lwt) {
+        $leagueUrl = $lwt[0]['leagueUrl'];
+        foreach ($lwt as $t) {
+            if (str_contains($t['teamUrl'], $st)) {
+                //  echo "<br />. $st" . $t['teamName'] . " " . $t['teamCategory'] . " " . $t['leagueUrl'];
+                $a = ['leagueUrl' => $t['leagueUrl']];
+                $a['teamName'] = $t['teamName'];
+                $a['teamCategory'] = $t['teamCategory'];
+                $a['teamUrl'] = $t['teamUrl'];
+                $a['idTeam'] = $t['idTeam'];
+                $cal = str_replace("equipacions", "calendari", $t['leagueUrl']);
+                echo $cal;
+                $array = get_headers($cal);
+                if($array[0]=="HTTP/1.1 200 OK"){
+                    $a['calendar']=1;
+                }
+                array_push($teamLeagues, $a);
+            }
+        }
+    }
+    file_put_contents("lligues_$st.json", json_encode($teamLeagues));
+}

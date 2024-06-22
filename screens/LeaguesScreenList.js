@@ -27,11 +27,11 @@ export const LeaguesScreenList = ({ navigation }) => {
   h = <LeaguesList key={currentDate}></LeaguesList>
   return (
     <>
-      <View style={{ width: '94%', marginLeft: '3%', height:'100%' }}>
+      <View style={{ width: '96%', marginLeft: '2%', height:'100%',  }}>
         <View style={styles.sectionTitle}>
           <Text style={styles.sectionTitleText}>Competicions</Text>
         </View>
-        <ScrollView>
+        <ScrollView style={{marginTop:6}}>
           {h}
         </ScrollView></View>
     </>

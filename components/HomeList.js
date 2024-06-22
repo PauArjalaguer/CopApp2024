@@ -14,7 +14,7 @@ const goToMap = (address) => {
     Linking.openURL(encodeURI(url))
 }
 export const HomeList = () => {
-    const db = SQLite.openDatabase('./db.COPapp2')
+    const db = SQLite.openDatabase('./db.FCFapp')
     const navigation = useNavigation();
     const handleLeaguePress = (idLeague, groupName, leagueName) => {
         navigation.navigate('Leagues', { screen: 'LeagueScreen', params: { matchIdLeague: idLeague, matchGroupName: groupName, matchLeagueName: leagueName } });
@@ -62,25 +62,24 @@ export const HomeList = () => {
     function meteoIcon(meteoData) {
         if (meteoData) {
             let d = meteoData.split('|');
-            console.log(d[1]);
             return d[1].trim();
         }
     }
     const fetchMatchesData = () => {
+        
         db.transaction((tx) => {
             console.log("Transaction");
-            tx.executeSql("SELECT distinct teamId FROM  activeTeams ;", (error) => { console.log(error) }, (tx, results) => {
+            tx.executeSql("SELECT distinct idTeam FROM  activeTeams ;", (error) => { console.log(error) }, (tx, results) => {
 
-                var len = results.rows.length;
-
+                var len = results.rows.length;                
                 setItems(results.rows);
-                console.log(results.rows)
+                
                 results.rows._array.map((team) => {
                     string = string + team.teamId + ",";
                 })
-                console.log("After map:" + string)
-                fetch("http://clubolesapati.cat/API/apiPropersPartits.php?teamFilter=" + string)
-                    .then(response => {
+              
+                fetch("http://clubolesapati.cat/API/apiPropersPartits.php?teamFilter=")
+                    .then(response => {                       
                         return response.json()
                     })
                     .then(data => {
@@ -89,15 +88,13 @@ export const HomeList = () => {
                     })
             });
         })
-
-
     }
     const fetchNewsData = () => {
         axios({
             method: 'get',
-            url: `http://clubolesapati.cat/API/apiNoticies.php?top=15&headline=1`,
+            url: `http://clubolesapati.cat/API/apiNoticies.php?top=5&headline=1`, 
         }).then((response) => {
-            setItems(response.data);
+            setItems(response.data); 
         })
     }
     useEffect(() => {
@@ -107,16 +104,16 @@ export const HomeList = () => {
 
 
     }, [])
-    if (nextMatch[0]) {
+    if (nextMatch[0] && items[0]) {
         return (
             <>
-                {nextMatch ?
+               {nextMatch ?
                     <>
                         <View style={styles.sectionTitle}>
                             <Text style={styles.sectionTitleText}>Proper partit</Text>
                         </View>
 
-                        <View style={{ borderColor: '#ddd', borderWidth: 1 }}>
+                        <View style={{ borderColor: '#41628b', borderWidth: 1,backgroundColor:'#fff' }}>
                             <Text style={styles.homeScreenLeagueName}>{nextMatch[0].leagueName} {nextMatch[0].groupName}</Text>
                             <View style={styles.homeScreenMatchTeamsRow}>
                                 <View style={styles.homeScreenMatchTeam}>
@@ -152,19 +149,19 @@ export const HomeList = () => {
                             <Text> </Text>
                         </View>
                     </> : null
-                }
+                } 
                 <View style={styles.sectionTitle}>
                     <Text style={styles.sectionTitleText}>Notícies</Text>
                 </View>
 
-                {items.map(
+               {items.map(
                     n => (
                         < NewsListItem id={n.id} title={n.title} subtitle={n.subtitle} image={n.pathImage} text={n.text} date={n.time}
                             key={n.id}
                         ></NewsListItem>
                     )
                 )
-                }
+                } 
 
             </>
         )

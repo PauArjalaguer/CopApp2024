@@ -13,7 +13,7 @@ export const LeagueScreen = ({ navigation, route }) => {
     let imageHeight = deviceWidth / 2;
     return (
         <>
-            <View style={{ width: '94%', marginLeft: '3%' ,height:'100%'}}>
+            <View style={{ width: '94%', marginLeft: '3%', height: '96%', }}>
                 <Text style={styles.sectionTitleText}>{matchLeagueName} {matchGroupName}</Text>
                 <ScrollView style={styles.container}>
                     {h}
