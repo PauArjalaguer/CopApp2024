@@ -7,13 +7,13 @@ export const NewsList = () => {
     let [items, setItems] = useState([]);
     const fetchNewsData = () => {
         // console.log("Fetch news");
-        fetch("http://clubolesapati.cat/API/apiNoticies.php?top=10&headline=1")
+        fetch("http://jok.cat/api/news/efs_masquefa/15")
             .then(response => {
                 return response.json()
             })
             .then(data => {
                 setItems(data);
-                console.log(items);
+               // console.log(items);
 
             })
     }
@@ -25,8 +25,8 @@ export const NewsList = () => {
 
             {items?.map(
                 n => (
-                    < NewsListItem id={n.id} title={n.title} subtitle={n.subtitle} image={n.pathImage} text={n.text} date={n.time}
-                        key={n.id}
+                    <NewsListItem id={n.idNew} title={n.newsTitle} subtitle={n.newsSubtitle} image={n.newsImage} text={n.newsContent} date={n.newsDateTime}
+                        key={n.idNew}
                     ></NewsListItem>
                 )
             )

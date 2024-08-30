@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Image, Text, View, Dimensions } from 'react-native'
 import * as SQLite from 'expo-sqlite';
 const styles = require('../styles/stylesheet');
-export const TeamPlayersList = ({ teamId }) => {
+export const TeamPlayersList = ({ teamId,teamName, teamLink }) => {
     let itemsArray = [];
     let [items, setItems] = useState([]);
     let [reload, setReload] = useState();
-    const fetchPlayersData = () => {
-      
-        fetch("http://clubolesapati.cat/API/apiEquip.php?top=1&idTeam=" + teamId)
+    const fetchPlayersData = () => {       
+        fetch("http://jok.cat/API/teamUrlToJson.php?url="+teamLink)
             .then(response => {
-                //console.log(response)
+                console.log(response)
                 return response.json()
             })
             .then(data => {
@@ -45,7 +44,7 @@ export const TeamPlayersList = ({ teamId }) => {
 
                             <View style={styles.teamsPlayersListContent}>
                                 <View style={styles.teamsPlayersListNumberView}><Text style={styles.teamsPlayersListNumber}>{n.number}</Text></View>
-                                <Image source={{ uri: "http://clubolesapati.cat/images/dynamic/playersImages/" + n.image }} style={styles.teamPlayersListImage} ></Image>
+                                <Image source={{ uri: "http://clubolesapati.cat/images/dynamic/playersImages/blank.png"}} style={styles.teamPlayersListImage} ></Image>
                                 <View>
                                     <Text style={styles.teamsPlayersListText}>{n.playerName}</Text>
                                     <Text style={styles.teamsPlayersListDate}>{n.birthdate}</Text>

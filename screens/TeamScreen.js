@@ -8,23 +8,22 @@ const styles = require('../styles/stylesheet');
 export const TeamScreen = ({ navigation, route }) => {
   const teamId = route.params.teamId;
   const teamName = route.params.teamName;
+  const teamLink = route.params.teamLink;
   let h, p, n;
-  p = <TeamPlayersList teamId={teamId} style={{ flex: 1, flexDirection: 'row' }}></TeamPlayersList>
+  p = <TeamPlayersList teamId={teamId} teamLink={teamLink} style={{ flex: 1, flexDirection: 'row' }}></TeamPlayersList>
   h = <TeamLeaguesList teamId={teamId} teamName={teamName}></TeamLeaguesList>
-  n = <TeamNextMatch teamId={teamId} teamName={teamName} ></TeamNextMatch>
+  n = <TeamNextMatch teamId={teamId} teamName={teamName}  ></TeamNextMatch>
   let deviceWidth = Dimensions.get('window').width;
   let imageHeight = deviceWidth / 2;
   return (
     <>
-      <View style={{ width: '96%', marginLeft: '2%', }}>
+      <View style={{ width: '97%', marginHorizontal: 'auto', }}>
         <View style={styles.sectionTitle}>
           <Text style={styles.sectionTitleText}>{teamName}</Text>
         </View>
 
         <ScrollView style={styles.container} >
-          {/*  <View style={styles.sectionTitle}>
-            <Text style={styles.sectionTitleText}>Proper partit</Text>
-          </View> */}
+       
           {n}
           <View><Text> </Text></View>
           <View style={styles.sectionTitle}>

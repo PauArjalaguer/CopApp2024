@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native'
 import { NewsListItem } from './NewsListItem'
-import moment from 'moment';
-import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 const styles = require('../styles/stylesheet');
 const goToMap = (address) => {
     const url = Platform.select({
@@ -76,10 +74,10 @@ export const HomeList = () => {
                 
                 results.rows._array.map((team) => {
                     string = string + team.teamId + ",";
-                })
-              
+                })              
                 fetch("http://clubolesapati.cat/API/apiPropersPartits.php?teamFilter=")
-                    .then(response => {                       
+                    .then(response => {                
+                        
                         return response.json()
                     })
                     .then(data => {
@@ -90,11 +88,14 @@ export const HomeList = () => {
         })
     }
     const fetchNewsData = () => {
-        axios({
-            method: 'get',
-            url: `http://clubolesapati.cat/API/apiNoticies.php?top=5&headline=1`, 
-        }).then((response) => {
-            setItems(response.data); 
+     
+        fetch("http://jok.cat/api/news/efs_masquefa/15")
+        .then(response => {              
+            return response.json()
+        })
+        .then(data => {
+           
+            setItems(data); 
         })
     }
     useEffect(() => {
@@ -113,7 +114,7 @@ export const HomeList = () => {
                             <Text style={styles.sectionTitleText}>Proper partit</Text>
                         </View>
 
-                        <View style={{ borderColor: '#41628b', borderWidth: 1,backgroundColor:'#fff' }}>
+                        <View style={{ borderColor: '#41628b', borderWidth: 1,backgroundColor:'#fff', marginBottom:10 }}>
                             <Text style={styles.homeScreenLeagueName}>{nextMatch[0].leagueName} {nextMatch[0].groupName}</Text>
                             <View style={styles.homeScreenMatchTeamsRow}>
                                 <View style={styles.homeScreenMatchTeam}>
@@ -143,11 +144,7 @@ export const HomeList = () => {
                                 </View>
                             </View>
 
-                        </View>
-
-                        <View>
-                            <Text> </Text>
-                        </View>
+                        </View>                       
                     </> : null
                 } 
                 <View style={styles.sectionTitle}>
@@ -156,8 +153,8 @@ export const HomeList = () => {
 
                {items.map(
                     n => (
-                        < NewsListItem id={n.id} title={n.title} subtitle={n.subtitle} image={n.pathImage} text={n.text} date={n.time}
-                            key={n.id}
+                        <NewsListItem id={n.idNew} title={n.newsTitle} subtitle={n.newsSubtitle} image={n.newsImage} text={n.text} date={n.newsDateTime}
+                            key={n.idNew}
                         ></NewsListItem>
                     )
                 )

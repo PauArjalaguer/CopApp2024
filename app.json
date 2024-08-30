@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "efsmasquefa"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,6 +32,25 @@
       "eas": {
         "projectId": "70f7a0c3-50e5-4430-80a1-64be840fc9a6"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "infoPlist": {
+              "NSAppTransportSecurity": {
+                "NSAllowsArbitraryLoads": true
+              }
+            },
+            "supportsTablet": true
+          }
+        }
+      ],
+      "expo-font"
+    ]
   }
 }

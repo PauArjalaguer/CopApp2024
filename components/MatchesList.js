@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { MatchesListItem } from './MatchesListItem'
 
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 const styles = require('../styles/stylesheet');
 export const MatchesList = () => {
-  const db = SQLite.openDatabase('./db.COPapp2') // returns Database object  
+  const db = SQLite.openDatabase('./db.FCFapp') // returns Database object  
   const navigation = useNavigation();
 
   let itemsArray = [];

@@ -12,18 +12,18 @@ import { MatchesScreen } from './screens/MatchesScreen'
 import { TeamsScreen } from './screens/TeamsScreen'
 import { LeaguesScreen } from './screens/LeaguesScreen';
 
-import { fetchTeams, createTable } from './functions/functions'
+import { createTable } from './functions/functions'
 
 export default function App() {
   function wait(ms){
     console.log("Començo a esperar")
     var start = new Date().getTime();
     var end = start;
-    while(end < start + ms) {
+    while(end < start + ms) { 
       end = new Date().getTime();
    }
  }
-  const [loadTeamsStatus, setLoadTeamsStatus] = useState('Esperant')
+  const [loadTeamsStatus, setLoadTeamsStatus] = useState('Esperant dades')
   useEffect(() => {
 
     createTable();
@@ -167,7 +167,7 @@ const Tab = createMaterialBottomTabNavigator();
 const styles = StyleSheet.create({
   header: { width: '100%', height: 90, justifyContent: 'center', alignItems: 'center', borderBottomColor: 'white', borderBottomWidth: 0, marginTop: 10, marginBottom: 15 },
   headerText: { fontSize: 32, fontFamily: 'Jost700Bold', color: 'white' },
-  headerImage: { width: 30, height: 30 },
+  headerImage: { width: 36, height: 36 },
   container: {
     flex: 1,
     alignItems: 'center',

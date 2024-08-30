@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { MatchProvider,MatchContext } from '../context/MatchContext';
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 const styles = require('../styles/stylesheet');
 import { LeagueScreenListItems } from './LeagueScreenListItems'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import * as SQLite from 'expo-sqlite';
+
 export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
-   
+
     let [isLoadingClass, setIsLoadingClass] = useState(true);
     let [isLoadingMatches, setIsLoadingMatches] = useState(true);
 
@@ -13,10 +14,12 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
     let [classification, setClassification] = useState([]);
     let [visibleClassification, setVisibleClassification] = useState(0);
 
+    const idRound = useRef("");
+    idRound.current = "Jornada 0";
+
     let [reload, setReload] = useState(0);
     const fetchClassificationData = () => {
         var classUrl = matchIdLeague.replace("calendari", "classificacio");
-       
         fetch("http://jok.cat/API/classificationUrlToJson.php?url=" + classUrl)
             .then(response => {
                 return response.json()
@@ -36,14 +39,14 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                 setIsLoadingMatches(false);
             })
     }
-    const handleClassPress = (position) => {     
+    const handleClassPress = (position) => {
         setVisibleClassification(position);
     }
     useEffect(() => {
         fetchClassificationData();
         fetchMatchesData();
     }, [reload])
-
+    const [state, setState] = useContext(MatchContext);
     if (matches && classification) {
         return (
             <>
@@ -56,7 +59,7 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                     },
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
-                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} />  Carregant dades</Text></View> : null} 
+                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} />  Carregant classificació</Text></View> : null}
                 <View style={isLoadingClass ? { display: 'none' } : { width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{
                         borderRadius: 5, backgroundColor: '#fff', padding: 0, width: '99%', margin: 5, marginTop: 10, marginBottom: 5, elevation: 3,
@@ -105,8 +108,8 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                                         <TouchableOpacity onPress={() => {
                                             handleClassPress(c.position)
                                         }}>
-                                            <FontAwesome5 name="angle-double-down" style={{ paddingTop: 8, color: '#001fbc', fontSize: 16, display: visibleClassification == c.position ? 'none' : 'flex' }} />
-                                            <FontAwesome5 name="angle-double-up" style={{ paddingTop: 8, color: '#001fbc', fontSize: 16, display: visibleClassification !== c.position ? 'none' : 'flex' }} /></TouchableOpacity>
+                                            <FontAwesome5 name="angle-double-down" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification == c.position ? 'none' : 'flex' }} />
+                                            <FontAwesome5 name="angle-double-up" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification !== c.position ? 'none' : 'flex' }} /></TouchableOpacity>
                                     </View>
                                 </View>
 
@@ -150,7 +153,7 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                     </View>
                 </View>
 
-                <View style={styles.sectionTitle}><Text style={styles.sectionTitleText}>Partits</Text></View>
+                {/* <View style={styles.sectionTitle}><Text style={styles.sectionTitleText}>Partits</Text></View> */}
                 {isLoadingMatches ? <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{
                     borderRadius: 5, backgroundColor: '#fff', padding: 4, width: '99%', margin: 5, marginTop: 5, marginBottom: 5, elevation: 3,
                     shadowColor: "#000",
@@ -160,35 +163,43 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                     },
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
-                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} />  Carregant dades</Text></View> : null}
-                <View style={isLoadingClass ? { display: 'none' } : null}>
-                    {
-                        matches?.map(
-                            n => (
-
-                                <LeagueScreenListItems
-                                    matchId={n.matchid}
-                                    matchLocal={n.local}
-                                    matchVisitor={n.visitor}
-                                    matchComplexName={n.complexName}
-                                    matchComplexAddress={n.complexAddress}
-                                    matchDate={n.matchDate}
-                                    matchHour={n.matchHour}
-                                    matchFixture={n.fixture}
-                                    matchLocalImage={n.localImage} matchVisitorImage={n.visitorImage}
-                                    matchIdLeague={n.idleague}
-                                    matchLeagueName={n.leagueName}
-                                    matchGroupName={n.groupName}
-                                    matchLocalResult={n.localResult}
-                                    matchVisitorResult={n.visitorResult}
-                                    key={n.local + n.visitor}
-                                    matchDistance={n.distance}
-                                    matchTravelTime={n.travelTime}
-                                    matchMeteo={n.matchMeteo}
-                                ></LeagueScreenListItems>
+                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} /> Carregant partits</Text></View> : null}
+                <View style={isLoadingClass ? { display: 'none' } : { borderBottomColor: '#ddd' }}>
+                    <MatchProvider>
+                        {
+                            matches?.map(
+                                n => {
+                                    let showFixture;
+                                    if (idRound.current != n.fixture) {
+                                        showFixture = true;
+                                    } else {
+                                        showFixture = false;
+                                    }
+                                    idRound.current = n.fixture;
+                                    return (<LeagueScreenListItems
+                                   
+                                        showFixture={showFixture}
+                                        matchId={n.local + n.visitor}
+                                        matchLocal={n.local}
+                                        matchVisitor={n.visitor}
+                                        matchComplexName={n.complexName}
+                                        matchComplexAddress={n.complexAddress}
+                                        matchDate={n.matchDate}
+                                        matchHour={n.matchHour}
+                                        matchFixture={n.fixture}
+                                        matchLocalImage={n.localImage} matchVisitorImage={n.visitorImage}
+                                        matchIdLeague={n.idleague}
+                                        matchLeagueName={n.leagueName}
+                                        matchGroupName={n.groupName}
+                                        matchLocalResult={n.localResult}
+                                        matchVisitorResult={n.visitorResult}
+                                        matchDistance={n.distance}
+                                        matchTravelTime={n.travelTime}
+                                        matchMeteo={n.matchMeteo}
+                                    ></LeagueScreenListItems>);
+                                }
                             )
-                        )
-                    }
+                        }</MatchProvider>
                 </View>
             </>
         )

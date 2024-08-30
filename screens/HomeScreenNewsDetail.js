@@ -11,7 +11,7 @@ export const HomeScreenNewsDetail = ({ navigation, route }) => {
   const [loaded, setLoaded] = useState(1);
   const fetchNewsData = () => {
     setLoaded(1);
-    fetch("http://clubolesapati.cat/API/apiNoticies.php?top=100&headline=0&id=" + id)
+    fetch("http://jok.cat/api/news/efs_masquefa/1")
       .then(response => {
         return response.json()
       })
@@ -29,7 +29,7 @@ export const HomeScreenNewsDetail = ({ navigation, route }) => {
   const { width } = useWindowDimensions();
   if (news[0]) {
     const source = {
-      html: `${news[0].content}`
+      html: `${news[0].newsContent}`
 
     };
 
@@ -42,10 +42,10 @@ export const HomeScreenNewsDetail = ({ navigation, route }) => {
       return (
         <>
           <View style={styles.newsDetailContainer}>
-            <ImageBackground source={{ uri: "http://clubolesapati.cat/images/dynamic/newsImages/mobile/" + news[0].pathImage }} resizeMode="cover" style={styles.newsDetailImage}>
+            <ImageBackground source={{ uri: "http://jok.cat/"  + news[0].newsImage }} resizeMode="cover" style={styles.newsDetailImage}>
               <View style={styles.newsDetailInfo}>
                 <View style={{ width: '80%' }}>
-                  <Text style={{ ...styles.newsListTitle, color: '#fff' }}>{news[0].title}  </Text>
+                  <Text style={{ ...styles.newsListTitle, color: '#fff' }}>{news[0].newsTitle}  </Text>
                 </View>
                 <View style={{ width: '20%' }}>
                   {/*  <Text style={styles.newsListDate}>Fa {news[0].date} dies </Text> */}
@@ -55,7 +55,7 @@ export const HomeScreenNewsDetail = ({ navigation, route }) => {
           </View>
           <ScrollView style={styles.container}>
             <View style={{ width: '100%', flex: 0, paddingHorizontal: 15 }}>
-              <Text style={styles.newsDetailSubtitle}>{news[0].subtitle}</Text>
+              <Text style={styles.newsDetailSubtitle}>{news[0].newsSubtitle}</Text>
 
               <RenderHtml contentWidth={width} source={source}></RenderHtml>
             </View>

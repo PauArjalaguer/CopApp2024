@@ -16,7 +16,7 @@ export const NewsListItem = ({ id, title,subtitle, image, date, text }) => {
                  {/*    <ImageBackground imageStyle={{ borderRadius: 10 }} source={{ uri: "http://clubolesapati.cat/images/dynamic/newsImages/" + image }} resizeMode="cover" style={styles.newsListImage}>
 
                     </ImageBackground> */}
-                    <Image  source={{ uri: "http://clubolesapati.cat/images/dynamic/newsImages/mobile/" + image }} style={styles.newsListImage} />
+                    <Image  source={{ uri: "http://jok.cat/" + image }} style={styles.newsListImage} />
                 </TouchableOpacity>
             </View>
             <View style={styles.newsListInfo}>

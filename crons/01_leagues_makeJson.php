@@ -1,6 +1,6 @@
 <?php
 $arrayGroups = [];
-$idSeason = 19;
+$idSeason = 20;
 $idCategory = 19308236;
 //f11: 19308233, f7:19308235, f5:24885364, fs:19308236, fem:19308237,fsfem:24694879,beach:19308239
 // carrego totes les lligues

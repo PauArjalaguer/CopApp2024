@@ -38,6 +38,6 @@ export const HomeScreenList = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    container: { width:'96%', marginLeft:'2%' },
+    container: { width:'96%', marginHorizontal:'auto' },
 });
 

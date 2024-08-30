@@ -55,7 +55,7 @@ function parseLeagues($url, $searchTeams, $mysqli)
     return $teamsArray;
 }
 
-$j = file_get_contents("realfcfGroups.json");
+$j = file_get_contents("fcfGroups.json");
 //printR(json_decode($j));
 $a = 0;
 foreach (json_decode($j) as $league) {
