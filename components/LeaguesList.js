@@ -98,9 +98,9 @@ export const LeaguesList = () => {
                 }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#001fbc', fontSize: 16 }} />  Carregant dades</Text></View> : null}
                 {leagues?.map(
                     n =>
-                    (<TouchableOpacity key={n[0] + "_" + n.groupName + "_" + n.idLeague}
+                    (<TouchableOpacity key={n[0] + "_" + n[1] + "_" + n[1]}
                         onPress={() => {
-                            handleLeaguePress(n.idLeague, n.groupName, n.leagueName)
+                            handleLeaguePress(n[0], n[1], n[1])
                         }}>
                         <View style={styles.teamsLeagueListContainer}>
                             <View style={styles.teamsLeagueListContent}>

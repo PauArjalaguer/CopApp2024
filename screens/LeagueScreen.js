@@ -14,7 +14,7 @@ export const LeagueScreen = ({ navigation, route }) => {
     return (
         <>
             <View style={{ width: '97%',marginHorizontal:'auto', height: '99.5%', }}>
-                <Text style={styles.sectionTitleText}>{matchLeagueName} {matchGroupName}</Text>
+                <Text style={styles.sectionTitleText}>{matchLeagueName}</Text>
                 <ScrollView style={styles.container}>
                     {h}
                 </ScrollView>

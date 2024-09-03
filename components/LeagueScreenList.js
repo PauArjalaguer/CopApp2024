@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { MatchProvider,MatchContext } from '../context/MatchContext';
+import { MatchProvider, MatchContext } from '../context/MatchContext';
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 const styles = require('../styles/stylesheet');
 import { LeagueScreenListItems } from './LeagueScreenListItems'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
+    const url = 'https://jokcatfs-pauarjalaguer.turso.io/';
+    const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjQ1MTcwNjYsImlkIjoiZjI3NmQ3NmUtMjA1My00ZmJhLWI2MTgtMGQyZGZkN2E3NDEzIn0.vGKIODWyeqUw-YY-XdW6jEUeRUSyFdevSdimkQ0bpIIghhEbrXsHUVdDMXUBWwCHFHYtBwWixlv_JqQVzuDoCQ";
 
     let [isLoadingClass, setIsLoadingClass] = useState(true);
     let [isLoadingMatches, setIsLoadingMatches] = useState(true);
@@ -18,33 +20,71 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
     idRound.current = "Jornada 0";
 
     let [reload, setReload] = useState(0);
-    const fetchClassificationData = () => {
-        var classUrl = matchIdLeague.replace("calendari", "classificacio");
-        fetch("http://jok.cat/API/classificationUrlToJson.php?url=" + classUrl)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                setClassification(data);
-                setIsLoadingClass(false);
-            })
+    const fetchClassificationData = async (matchIdLeague) => {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    statements: [
+                        {
+                            q: "SELECT  position,  teamName,  points,  played,  won,  draw,  lost,  goalsmade,  goalsreceived FROM classification where idLeague=771",
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                console.error('Error response:', errorBody);
+                throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            const data = await response.json();
+            setClassification(data[0].results.rows);          
+            setIsLoadingClass(false);
+        } catch (error) {
+            console.error('Error inserting or replacing classification:', error);
+        }
     }
-    const fetchMatchesData = () => {
-        fetch("http://jok.cat/API/leagueUrlToJson.php?url=" + matchIdLeague)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                setMatches(data);
-                setIsLoadingMatches(false);
-            })
+    const fetchMatchesData = async (matchIdLeague) => {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    statements: [
+                        {
+                            q: "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where g.idGroup ="+matchIdLeague,
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                console.error('Error response:', errorBody);
+                throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            const data = await response.json();
+            setMatches(data[0].results.rows);   
+          console.log(matches)      
+            setIsLoadingMatches(false);
+        } catch (error) {
+            console.error('Error inserting or replacing classification:', error);
+        }
     }
     const handleClassPress = (position) => {
         setVisibleClassification(position);
     }
     useEffect(() => {
-        fetchClassificationData();
-        fetchMatchesData();
+        fetchClassificationData(matchIdLeague);
+        fetchMatchesData(matchIdLeague);
     }, [reload])
     const [state, setState] = useContext(MatchContext);
     if (matches && classification) {
@@ -90,59 +130,59 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                         </View>
 
                         {classification?.map(c => {
-                            let classColor = c.color;
+                            let classColor = '#ffcc00';
                             return (<>
-                                <View key={c.position} style={{ alignSelf: 'stretch', flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#cdc' }}>
+                                <View key={c[0]} style={{ alignSelf: 'stretch', flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#cdc' }}>
                                     <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', backgroundColor: classColor }}>
-                                        <Text style={{ padding: 6, fontFamily: 'Jost500Medium', fontSize: 13, fontWeight: 'bold', color: 'white' }}>{c.position}</Text>
+                                        <Text style={{ padding: 6, fontFamily: 'Jost500Medium', fontSize: 13, fontWeight: 'bold', color: 'white' }}>{c[0]}</Text>
                                     </View>
                                     <View style={{ flex: 7, alignSelf: 'flex-start', justifyContent: 'center' }}>
                                         <TouchableOpacity onPress={() => {
-                                            handleClassPress(c.position)
-                                        }}><Text style={{ padding: 6, fontFamily: 'Jost500Medium', textTransform: 'capitalize', fontSize: 13, }}>{c.teamName.toLowerCase().substring(0, 35)}</Text></TouchableOpacity>
+                                            handleClassPress(c[0])
+                                        }}><Text style={{ padding: 6, fontFamily: 'Jost500Medium', textTransform: 'capitalize', fontSize: 13, }}>{c[1].substring(0, 35)}</Text></TouchableOpacity>
                                     </View>
                                     <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center' }}>
                                         <Text style={{ padding: 6, fontFamily: 'Jost500Medium', fontSize: 13 }}>{c.points}</Text>
                                     </View>
                                     <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                         <TouchableOpacity onPress={() => {
-                                            handleClassPress(c.position)
+                                            handleClassPress(c[0])
                                         }}>
-                                            <FontAwesome5 name="angle-double-down" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification == c.position ? 'none' : 'flex' }} />
-                                            <FontAwesome5 name="angle-double-up" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification !== c.position ? 'none' : 'flex' }} /></TouchableOpacity>
+                                            <FontAwesome5 name="angle-double-down" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification == c[0] ? 'none' : 'flex' }} />
+                                            <FontAwesome5 name="angle-double-up" style={{ paddingTop: 8, color: '#41628b', fontSize: 16, display: visibleClassification !== c[0] ? 'none' : 'flex' }} /></TouchableOpacity>
                                     </View>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', backgroundColor: '#eee', borderTopWidth: 1, borderTopColor: '#cdc', display: visibleClassification == c.position ? 'flex' : 'none' }}>
+                                <View style={{ flexDirection: 'row', backgroundColor: '#eee', borderTopWidth: 1, borderTopColor: '#cdc', display: visibleClassification == c[0] ? 'flex' : 'none' }}>
                                     <View style={{ flex: 1 }}></View>
                                     <View style={{ flex: 10, flexDirection: 'row' }}>
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center' }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>PUNTS:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.points} </Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[2]} </Text>
                                         </View>
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>J:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.played}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[3]}</Text>
                                         </View >
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>G:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.won}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[4]}</Text>
                                         </View >
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-center', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>E:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.draw}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[5]}</Text>
                                         </View>
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>P:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.lost}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[6]}</Text>
                                         </View>
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>GF:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.gF}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[7]}</Text>
                                         </View>
                                         <View style={{ flex: 1, alignSelf: 'stretch', alignSelf: 'flex-start', alignItems: 'center', }}>
                                             <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, fontWeight: 'bold', }}>GC:</Text>
-                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c.gC}</Text>
+                                            <Text style={{ padding: 3, fontFamily: 'Jost500Medium', fontSize: 10, }}> {c[8]}</Text>
                                         </View>
                                     </View>
                                     <View style={{ flex: 1 }}></View>
@@ -167,38 +207,37 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
                 <View style={isLoadingClass ? { display: 'none' } : { borderBottomColor: '#ddd' }}>
                     <MatchProvider>
                         {
-                            matches?.map(
-                                n => {
-                                    let showFixture;
-                                    if (idRound.current != n.fixture) {
-                                        showFixture = true;
-                                    } else {
-                                        showFixture = false;
-                                    }
-                                    idRound.current = n.fixture;
-                                    return (<LeagueScreenListItems
-                                   
-                                        showFixture={showFixture}
-                                        matchId={n.local + n.visitor}
-                                        matchLocal={n.local}
-                                        matchVisitor={n.visitor}
-                                        matchComplexName={n.complexName}
-                                        matchComplexAddress={n.complexAddress}
-                                        matchDate={n.matchDate}
-                                        matchHour={n.matchHour}
-                                        matchFixture={n.fixture}
-                                        matchLocalImage={n.localImage} matchVisitorImage={n.visitorImage}
-                                        matchIdLeague={n.idleague}
-                                        matchLeagueName={n.leagueName}
-                                        matchGroupName={n.groupName}
-                                        matchLocalResult={n.localResult}
-                                        matchVisitorResult={n.visitorResult}
-                                        matchDistance={n.distance}
-                                        matchTravelTime={n.travelTime}
-                                        matchMeteo={n.matchMeteo}
-                                    ></LeagueScreenListItems>);
-                                }
-                            )
+                              matches?.map(
+                                  n => {
+                                      let showFixture;
+                                      if (idRound.current != n[6]) {
+                                          showFixture = true;
+                                      } else {
+                                          showFixture = false;
+                                      }
+                                      idRound.current = n[6];
+                                      return (<LeagueScreenListItems  
+                                          showFixture={showFixture}
+                                          matchId={n[0]}
+                                          matchLocal={n[1]}
+                                          matchVisitor={n[2]}
+                                          matchComplexName={n[3]}
+                                          matchComplexAddress={n[16]}
+                                          matchDate={n[4]}
+                                          matchHour={n[5]}
+                                          matchFixture={n[6]}
+                                          matchLocalImage={n[7]} matchVisitorImage={n[8]}
+                                          matchIdLeague={n[0]}
+                                          matchLeagueName={n[9]}
+                                          matchGroupName={n[9]}
+                                          matchLocalResult={n[11]}
+                                          matchVisitorResult={n[12]}
+                                          matchesDistance={n[13]}
+                                          matchesTravelTime={n[14]}
+                                          matchMeteo={n[15]}
+                                      ></LeagueScreenListItems>);
+                                  }
+                              )
                         }</MatchProvider>
                 </View>
             </>
