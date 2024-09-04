@@ -6,7 +6,7 @@ const styles = require('../styles/stylesheet');
 export const NewsListItem = ({ id, title,subtitle, image, date, text }) => {
     const navigation = useNavigation();
     const gotoHomeScreenNewsDetail = (id) => {
-        navigation.navigate('HomeScreenNewsDetail', { id: id, title: title, subtitle: subtitle, image: image, text: text, date: date });
+        navigation.navigate('NewsDetail', { id: id, title: title, subtitle: subtitle, image: image, text: text, date: date });
     }
   
     return (

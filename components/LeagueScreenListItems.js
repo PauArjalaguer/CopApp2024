@@ -16,7 +16,8 @@ const gotoLink = (url) => {
         ios: `maps:0,0?q=${url}`,
         android: `geo:0,0?q=${url}`,
     })
-    Linking.openURL(encodeURI(gurl))
+   // Linking.openURL(encodeURI(gurl))
+   console.log(gurl)
 }
 
 function splitHour(string) {

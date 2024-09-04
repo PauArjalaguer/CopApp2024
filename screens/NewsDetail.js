@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Text, ImageBackground, View, ScrollView, useWindowDimensions } from 'react-native';
-import { decode } from 'html-entities';
 import RenderHtml from 'react-native-render-html'
 const styles = require('../styles/stylesheet');
 
-export const HomeScreenNewsDetail = ({ navigation, route }) => {
+export const NewsDetail = ({ navigation, route }) => {
   const id = route.params.id;
 
   const [news, setNews] = useState([]);

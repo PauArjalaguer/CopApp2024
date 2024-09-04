@@ -16,16 +16,3 @@ export function createTable() {
   });
 }
 
-export const fetchMatchesData = (matchIdLeague) => {
-  console.log(matchIdLeague);
-  fetch("http://jok.cat/API/leagueUrlToJson.php?url=" + matchIdLeague)
-    .then(response => {     
-      return response.json()
-    })
-    .then(data => {   
-        
-      return data;
-    })
-
-
-}
