@@ -7,8 +7,6 @@ import {LeagueScreen} from './LeagueScreen'
 //import {matchesFetch, MatchesFetch} from '../helpers/db/matchesFetch'
 const Stack = createStackNavigator();
 export const MatchesScreen = () => {
-
-
   //matchesFetch();
   return (
     <Stack.Navigator screenOptions={{

@@ -3,9 +3,10 @@ import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import * as SQLite from 'expo-sqlite/legacy';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { http_query } from '../functions/http';
 const styles = require('../styles/stylesheet');
 
-const db = SQLite.openDatabase('db.FCFapp_2')
+const db = SQLite.openDatabase('db.FCFapp')
 const url = 'https://jokcatfs-pauarjalaguer.turso.io/';
 const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjQ1MTcwNjYsImlkIjoiZjI3NmQ3NmUtMjA1My00ZmJhLWI2MTgtMGQyZGZkN2E3NDEzIn0.vGKIODWyeqUw-YY-XdW6jEUeRUSyFdevSdimkQ0bpIIghhEbrXsHUVdDMXUBWwCHFHYtBwWixlv_JqQVzuDoCQ";
 
@@ -26,39 +27,14 @@ export const LeaguesList = () => {
     }
     function removeLastComma(str) {
         return str.replace(/,\s*$/, '');
-      }
+    }
     const fetchLeaguesData = async (string) => {
-      string=removeLastComma(string);
-      console.log(string);
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    statements: [
-                        {
-                            q: "select idGroup, groupName from groups where idGroup in(select distinct idGroup from  matches where (idLocal in("+string+")));"
-                         
-                        }
-                    ]
-                })
-            });
+        string = removeLastComma(string);
+        console.log(string);
+        query = "select idGroup, groupName from groups where idGroup in(select distinct idGroup from  matches where (idLocal in(" + string + ")));";
+        params = [];
+        let response = http_query(query, params).then((res) => { setLeagues(res[0].results.rows); setIsLoading(false); });
 
-            if (!response.ok) {
-                const errorBody = await response.text();
-                console.error('Error response:', errorBody);
-                throw new Error(`Network response was not ok: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log(data)
-            setLeagues(data[0].results.rows);
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error inserting or replacing match:', error);
-        }
     }
     useEffect(() => {
         db.transaction((tx) => {
@@ -74,7 +50,6 @@ export const LeaguesList = () => {
                     string = string + team.idTeam + ",";
                 })
                 fetchLeaguesData(string);
-
             });
         })
 

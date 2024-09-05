@@ -68,7 +68,7 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
             <View style={styles.matchesListContainer}>
                 <View style={styles.matchesListContent}>
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={{ width: '85%' }}>
+                        <View style={{ width: '75%' }}>
                             <View style={{ padding: 2 }}>
                                 <Text style={styles.matchesListTeam}><Image source={{ uri: matchLocalImage }} style={styles.matchesListLogo} /> {small ? matchLocal.substring(0, 35) : matchLocal}</Text>
                             </View>
@@ -77,13 +77,13 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
                             </View>
 
                         </View>
-                        <View style={{ width: '15%', borderLeftWidth: 0, borderLeftColor: '#eee'}}>
+                        <View style={{ width: '25%', borderLeftWidth: 0, borderLeftColor: '#eee' }}>
                             {matchesDistance != 0 ?
-                                <><Image style={{ height: 16, width: 16, alignSelf: 'flex-end', marginRight: 3 }} source={{ uri: meteoIcon(matchesMeteo) }} />
+                                <><Image style={{ height: 24, width: 24, alignSelf: 'flex-end', marginRight: 3 }} source={{ uri: meteoIcon(matchesMeteo) }} />
                                     <Text style={{ fontSize: 12, color: '#929292', fontFamily: 'Jost300Light', alignSelf: 'flex-end', textAlign: 'right', paddingTop: 5 }}>
-                                        {matchesDistance} km{"\n"} {convertirSegons(matchesTravelTime)}</Text></>
+                                        {matchesDistance} km - {convertirSegons(matchesTravelTime)}</Text></>
                                 :
-                                <Image style={{ height: 32, width: 32, alignSelf: 'flex-end', marginRight: 3, marginTop:10 }} source={{ uri: meteoIcon(matchesMeteo) }} />
+                                <Image style={{ height: 32, width: 32, alignSelf: 'flex-end', marginRight: 3, marginTop: 10 }} source={{ uri: meteoIcon(matchesMeteo) }} />
                             }
                         </View>
                     </View>
@@ -97,7 +97,7 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
                                         {split(matchDate)} {splitHour(matchHour)}
                                     </Text>
                                 </View>
-                                <Text style={styles.matchesListComplexAddress}>{matchComplexAddress}</Text>
+                                {/*   <Text style={styles.matchesListComplexAddress}>{matchComplexAddress}</Text> */}
                             </TouchableOpacity>
 
                             <View style={{
@@ -106,13 +106,6 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
                                 flexDirection: 'row',
                                 alignItems: 'center'
                             }}>
-                                {/*   <Image style={{ height: 16, width: 16, alignSelf: 'flex-end', marginRight: 3 }} source={{ uri: meteoIcon(matchesMeteo) }} />
-                                {matchesDistance != 0 ?
-                                    <Text style={{ fontSize: 12, color: '#929292', fontFamily: 'Jost300Light' }}>
-                                        Distancia : {matchesDistance} km |  {matchesTravelTime} : </Text>
-                                    :
-                                    ''
-                                } */}
                             </View>
                         </View>
                     </View>

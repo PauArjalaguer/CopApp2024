@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Image, Text, View, Dimensions } from 'react-native'
 import * as SQLite from 'expo-sqlite';
 const styles = require('../styles/stylesheet');
-export const TeamPlayersList = ({ teamId,teamName, teamLink }) => {
+export const TeamPlayersList = ({ idTeam,teamName, teamLink }) => {
     let itemsArray = [];
     let [items, setItems] = useState([]);
     let [reload, setReload] = useState();

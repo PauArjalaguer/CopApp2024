@@ -3,9 +3,10 @@ import axios from 'axios'
 import { View, Text, TouchableOpacity, Switch } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import { http_query } from '../functions/http';
 import * as SQLite from 'expo-sqlite/legacy';
-const db = SQLite.openDatabase('db.FCFapp_2')
+import { LoadingComponent } from './LoadingComponent';
+const db = SQLite.openDatabase('db.FCFapp')
 const styles = require('../styles/stylesheet');
 export const TeamsList = () => {
 
@@ -14,6 +15,7 @@ export const TeamsList = () => {
 
   const navigation = useNavigation();
   const handleTeamPress = (idTeam, teamName, link) => {
+
     navigation.navigate('TeamScreen', { idTeam: idTeam, teamName: teamName, teamLink: link });
   }
   const reloadPress = () => {
@@ -51,42 +53,21 @@ export const TeamsList = () => {
   }
 
   const axiosCallback = async (tString) => {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          statements: [
-            {
-              q: "select teamId as idTeam, teamName, teamAcronym from teams where idClub=1",
-            }
-          ]
-        })
-      });
-
-      if (!response.ok) {
-        const errorBody = await response.text();
-        console.error('Error response:', errorBody);
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-      const data = await response.json();
+    query = "select teamId as idTeam, teamName, teamAcronym from teams where idClub=1";
+    params = [];
+    let response = http_query(query, params).then((res) => {
       setProcessedTeams([]);
-      data[0].results.rows.map((m, index) => {      
+     
+      res[0].results.rows.map((m, index) => {
         let isActive = 0;
-        if (tString.search(m[0]) >= 0) {
-          //console.log("index "+index+" : "+m[0] + " està a " + tString);
+        if (tString.search(m[0]) >= 0) {          
           isActive = 1;
         }
-        setProcessedTeams(processedTeams => [...processedTeams, { 'idTeam': m[0], 'teamName': m[1], 'isActive': isActive }]);       
+        setProcessedTeams(processedTeams => [...processedTeams, { 'idTeam': m[0], 'teamName': m[1], 'isActive': isActive }]);
       })
-
       setIsLoading(false);
-    } catch (error) {
-      console.error('Error inserting or replacing match:', error);
-    }
+    });
+
 
   }
   useEffect(() => {
@@ -106,16 +87,7 @@ export const TeamsList = () => {
   if (processedTeams) {
     return (
       <>
-        {isLoading ? <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{
-          borderRadius: 5, backgroundColor: '#fff', padding: 4, width: '99%', margin: 5, marginTop: 5, marginBottom: 5, elevation: 3,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
-        }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 16 }} /> Carregant dades.</Text></View> : null}
+        {isLoading ? <LoadingComponent /> : null}
         {processedTeams?.map(
           n => (
             <View style={styles.teamsListContainer} key={n.idTeam}>

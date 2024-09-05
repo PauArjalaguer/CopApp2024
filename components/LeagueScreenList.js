@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { MatchProvider, MatchContext } from '../context/MatchContext';
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 const styles = require('../styles/stylesheet');
-import { LeagueScreenListItems } from './LeagueScreenListItems'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import { http_query } from '../functions/http';
 import { LoadingComponent } from './LoadingComponent';
 import { Classification } from './Classification';
@@ -19,14 +18,11 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
     let [visibleClassification, setVisibleClassification] = useState(0);
 
     let [reload, setReload] = useState(0);
-
-
-
+    const [state, setState] = useContext(MatchContext);
     const fetchClassificationData = async (matchIdLeague) => {
         query = "SELECT  position,  teamName,  points,  played,  won,  draw,  lost,  goalsmade,  goalsreceived FROM classification where idLeague=771";
         params = [];
         let response = http_query(query, params).then((res) => { setClassification(res[0].results.rows); setIsLoadingClass(false); });
-
     }
     const fetchMatchesData = async (matchIdLeague) => {
         query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where g.idGroup =" + matchIdLeague
@@ -38,7 +34,8 @@ export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
         fetchClassificationData(matchIdLeague);
         fetchMatchesData(matchIdLeague);
     }, [reload])
-    const [state, setState] = useContext(MatchContext);
+
+
     if (matches && classification) {
         return (
             <>

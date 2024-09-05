@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, Image, TouchableOpacity, Linking } from 'react-native'
+import { http_query } from '../functions/http';
+
 const styles = require('../styles/stylesheet');
 const goToMap = (address) => {
     const url = Platform.select({
@@ -25,12 +27,12 @@ function convertirSegons(segons) {
 function meteoIcon(meteoData) {
     if (meteoData) {
         let d = meteoData.split('|');
-       
+
         return d[1].trim();
     }
 }
-export const TeamNextMatch = ({ teamId, teamName }) => {
-
+export const TeamNextMatch = ({ idTeam, teamName }) => {
+    console.log(idTeam);
     const [nextMatch, setNextMatch] = useState([]);
 
     const [totalDuration, setTotalDuration] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -53,59 +55,47 @@ export const TeamNextMatch = ({ teamId, teamName }) => {
         }
 
     }
-    const fetchMatchesData = () => {       
-        fetch("http://clubolesapati.cat/API/apiPropersPartits.php?top=1&idTeam=" + teamId)
-            .then(response => {
-                //console.log(response)
-                return response.json()
-            })
-            .then(data => {
-                setNextMatch(data);
-                //console.log(data);
-            })
+    const fetchMatchesData = () => {
+        console.log("-" + idTeam);
+        query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where idLocal in (" + idTeam + ") or idVisitor in (" + idTeam + ") limit 0,1";
+        params = [];
+        let response = http_query(query, params).then((res) => { setNextMatch(res[0].results.rows); });
     }
     useEffect(() => {
         fetchMatchesData();
-
     }, [reload])
-    /*  return (<TouchableOpacity style={{ flex: 3, fontSize: 48 }}
-         onPress={() => { reloadPress() }}>
-         <Text style={{ fontSize: 48 }}>Reload</Text>
-     </TouchableOpacity>)  */
     if (nextMatch[0]) {
         return (
-            <View style={{ borderColor: '#ddd', borderWidth: 1 }}>
-                <Text style={styles.homeScreenLeagueName}>{nextMatch[0].leagueName} {nextMatch[0].groupName}</Text>
+            <View style={{ borderColor: '#aaa', borderWidth: 1, backgroundColor: '#fff', marginBottom: 6, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
+                <Text style={styles.homeScreenLeagueName}>{nextMatch[0].leagueName} {nextMatch[0][9]}</Text>
                 <View style={styles.homeScreenMatchTeamsRow}>
                     <View style={styles.homeScreenMatchTeam}>
-                        <Image source={{ uri: nextMatch[0].localImage }} style={[styles.homeScreenMatchTeamImage]} />
-                        <Text style={[styles.homeScreenMatchTeamName]}>{nextMatch[0].truncatedLocal ? nextMatch[0].truncatedLocal : nextMatch[0].local}</Text>
+                        <Image source={{ uri: nextMatch[0][7] }} style={[styles.homeScreenMatchTeamImage]} />
+                        <Text style={[styles.homeScreenMatchTeamName]}>{nextMatch[0].truncatedLocal ? nextMatch[0].truncatedLocal : nextMatch[0][1]}</Text>
                     </View>
                     <View style={[styles.homeScreenMatchTeam, styles.homeScreenMatchTeamBorder]}>
-                        <Image source={{ uri: nextMatch[0].visitorImage }} style={[styles.homeScreenMatchTeamImage]} />
-                        <Text style={[styles.homeScreenMatchTeamName]}>{nextMatch[0].truncatedVisitor ? nextMatch[0].truncatedVisitor : nextMatch[0].visitor }</Text>
+                        <Image source={{ uri: nextMatch[0][8] }} style={[styles.homeScreenMatchTeamImage]} />
+                        <Text style={[styles.homeScreenMatchTeamName]}>{nextMatch[0].truncatedVisitor ? nextMatch[0].truncatedVisitor : nextMatch[0][2]}</Text>
                     </View>
                 </View>
                 <View>
                     <TouchableOpacity onPress={() => goToMap(nextMatch[0].complexAddress)} style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        <Text style={styles.homeScreenMatchComplexName}>{nextMatch[0].complexName}</Text>
-                        <Text style={styles.homeScreenMatchDate}>{split(nextMatch[0].matchDate) + " " + splitHour(nextMatch[0].matchHour)}</Text>
+                        <Text style={styles.homeScreenMatchComplexName}>{nextMatch[0][3]}</Text>
+                        <Text style={styles.homeScreenMatchDate}>{split(nextMatch[0][4]) + " " + splitHour(nextMatch[0][5])}</Text>
                     </TouchableOpacity>
-                    <View style={{flex:1,  flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
                         <Text style={styles.homeScreenMatchComplexAddress}>{nextMatch[0].complexAddress}</Text>
-                      
+
                         {nextMatch[0].distance != 0 ?
-                            <><Image style={{ height: 14, width: 14,  marginRight: 3 }} source={{ uri: meteoIcon(nextMatch[0].meteo) }} />
-                                <Text style={{ fontSize: 11, color: '#929292', fontFamily: 'Jost300Light',  textAlign: 'right', paddingRight:15 }}>
-                                    {nextMatch[0].distance} km | {convertirSegons(nextMatch[0].travelTime)}</Text></>
+                            <><Image style={{ height: 14, width: 14, marginRight: 3 }} source={{ uri: meteoIcon(nextMatch[0].meteo) }} />
+                                <Text style={{ fontSize: 11, color: '#929292', fontFamily: 'Jost300Light', textAlign: 'right', paddingRight: 15 }}>
+                                    {nextMatch[0][13]} km | {convertirSegons(nextMatch[0][14])}</Text></>
                             :
-                            <Image style={{ height: 16, width: 16,marginRight:13 }} source={{ uri: meteoIcon(nextMatch[0].meteo) }} />
+                            <Image style={{ height: 16, width: 16, marginRight: 13, }} source={{ uri: meteoIcon(nextMatch[0][15]) }} />
                         }
                     </View>
                 </View>
-              
             </View>
-
         )
     } else {
         return (

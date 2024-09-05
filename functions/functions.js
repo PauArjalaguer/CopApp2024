@@ -4,9 +4,9 @@ import axios from 'axios';
 //busco a l' api i descarrego equips
 
 export function createTable() {
-  const db = SQLite.openDatabase('db.FCFapp_2');
+  const db = SQLite.openDatabase('db.FCFapp');
   db.transaction(tx => {
-  // tx.executeSql('DELETE FROM activeTeams',null, console.log("elimina la taula"));
+   //tx.executeSql('DELETE FROM activeTeams',null, console.log("elimina la taula"));
 
     tx.executeSql(
       'CREATE TABLE IF NOT EXISTS activeTeams (idTeam varchar PRIMARY KEY)',
