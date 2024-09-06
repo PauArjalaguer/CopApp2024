@@ -122,9 +122,7 @@ export const TeamsList = () => {
     )
   } else {
     return (
-      <View>
-        <Text style={{ padding: 9, fontFamily: 'GalanoGrotesqueBold', }}>Carregant dades</Text>
-      </View>
+     <LoadingComponent />
     )
   }
 }

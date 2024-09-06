@@ -20,13 +20,14 @@ export const Classification = ({ classification, isLoadingClass, setVisibleClass
                     <View style={{ flex: 7 }}>
                         <Text style={{ fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 2 }}>Classificació </Text>
                     </View>
-                    <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
+                    <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'flex-end', }}>
                         <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>
                         </Text>
                     </View>
-                    <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
+                    <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'flex-end', }}>
                         <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>
-                            P </Text>
+                           
+                            </Text>
                     </View>
                     <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'center', }}>
                         <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>

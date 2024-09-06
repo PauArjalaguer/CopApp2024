@@ -4,6 +4,7 @@ import { NewsListItem } from './NewsListItem'
 import { useNavigation } from '@react-navigation/native';
 import * as SQLite from 'expo-sqlite/legacy';
 import { http_query } from '../functions/http';
+import { LoadingComponent } from './LoadingComponent';
 const styles = require('../styles/stylesheet');
 const goToMap = (address) => {
     const url = Platform.select({
@@ -49,6 +50,9 @@ export const HomeList = () => {
 
     const [totalDuration, setTotalDuration] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+    const setReloadFunction = ()=>{     
+        setReload(Math.floor(Math.random() * 10));
+    }
     function convertirSegons(segons) {
         if (segons < 3600) {
             // Menys d'una hora, convertir a minuts
@@ -76,13 +80,13 @@ export const HomeList = () => {
     const fetchMatchesData = string => {
         string = removeLastComma(string);
         if (string.length > 1) {
-            query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where idLocal in (" + string + ") or idVisitor in (" + string + ")  limit 0,1";
+            query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where idLocal in (" + string + ") or idVisitor in (" + string + ")  order by idRound asc limit 0,1";
         } else {
             query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup   limit 0,1";
         }
-       //  query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup   limit 0,1";
+        //  query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup   limit 0,1";
 
-        console.log(query);
+    
         params = [];
         let response = http_query(query, params).then((res) => { setNextMatch(res[0].results.rows); });
 
@@ -94,9 +98,8 @@ export const HomeList = () => {
         let response = http_query(query, params).then((res) => { setNews(res[0].results.rows); });
     }
 
-    useEffect(() => {
-        db.transaction((tx) => {
-            console.log("Transaction");
+    useEffect(() => {       
+        db.transaction((tx) => {         
             tx.executeSql("SELECT distinct idTeam FROM  activeTeams;", [], (tx, results) => {
                 var len = results.rows.length;
                 if (len > 0) {
@@ -118,11 +121,12 @@ export const HomeList = () => {
             <>
                 {nextMatch[0] ?
                     <>
+                    
                         <View style={styles.sectionTitle}>
                             <Text style={styles.sectionTitleText}>Proper partit</Text>
                         </View>
 
-                        <View style={{ borderColor: '#aaa', borderWidth: 1, backgroundColor: '#fff', marginBottom: 6, borderBottomLeftRadius:4, borderBottomRightRadius:4}}>
+                        <View style={{ borderColor: '#aaa', borderWidth: 1, backgroundColor: '#fff', marginBottom: 6, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
                             <Text style={styles.homeScreenLeagueName}>{nextMatch[0].leagueName} {nextMatch[0][9]}</Text>
                             <View style={styles.homeScreenMatchTeamsRow}>
                                 <View style={styles.homeScreenMatchTeam}>
@@ -151,9 +155,8 @@ export const HomeList = () => {
                                     }
                                 </View>
                             </View>
-
                         </View>
-                    </> : null
+                    </> : <LoadingComponent loadText="Carregant" setReloadFunction={setReloadFunction} />
                 }
 
                 <View style={styles.sectionTitle}>

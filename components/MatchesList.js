@@ -20,13 +20,11 @@ export const MatchesList = () => {
 
 
   function removeLastComma(str) {
-    console.log(str)
     return str.replace(/,\s*$/, '');
   }
   const fetchMatchesData = (string) => {
-    console.log(string);
     string = removeLastComma(string);
-    query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where idLocal in (" + string + ") or idVisitor in (" + string + ")  limit 0,50";
+    query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates, m.idGroup from matches m join groups g on g.idGroup=m.idGroup where idLocal in (" + string + ") or idVisitor in (" + string + ")  limit 0,50";
     params = [];
     let response = http_query(query, params).then((res) => { setMatches(res[0].results.rows); });
   }
@@ -42,7 +40,6 @@ export const MatchesList = () => {
         results.rows._array.map((team) => {
           string = string + team.idTeam + ",";
         })
-        console.log(string);
         fetchMatchesData(string);
       });
     })
@@ -61,7 +58,7 @@ export const MatchesList = () => {
           matchComplexName={n[3]} matchComplexAddress={n[3]} matchDate={n[4]}
           matchHour={n[5]} matchFixture={n[6]}
           matchLocalImage={n[7]} matchVisitorImage={n[8]}
-          matchIdLeague={n[9]} matchLeagueName={n[9]} matchGroupName={n[9]}
+          matchIdLeague={n[17]} matchLeagueName={n[9]} matchGroupName={n[9]}
           matchesLocalResult={n[10]} matchesVisitorResult={n[11]}
           key={n[0]} matchesDistance={n[13]}
           matchesTravelTime={n[14]} matchesMeteo={n[15]} matchesMeteoIcon={n[15]}

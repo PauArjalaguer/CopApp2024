@@ -8,11 +8,12 @@ const goToMap = (address) => {
         ios: `maps:0,0?q=${address}`,
         android: `geo:0,0?q=${address}`,
     })
-    console.log(url);
-    Linking.openURL(encodeURI(url)).then();
+    //console.log(url);
+    Linking.openURL(encodeURI(url));
 }
 export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComplexName, matchComplexAddress, matchDate, matchHour, matchFixture, matchLocalImage, matchVisitorImage, matchIdLeague, matchLeagueName, matchGroupName, matchesLocalResult, matchesVisitorResult, matchesDistance, matchesTravelTime, matchesMeteo }) => {
     const windowWidth = Dimensions.get('window').width;
+ 
     let small;
     if (windowWidth < 479) {
         small = true;
@@ -36,8 +37,7 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
 
     function meteoIcon(meteoData) {
         if (meteoData) {
-            let d = meteoData.split('|');
-            console.log(d[1]);
+            let d = meteoData.split('|');   
             return d[1].trim();
         }
     }
@@ -59,14 +59,20 @@ export const MatchesListItem = ({ matchId, matchLocal, matchVisitor, matchComple
 
 
     const navigation = useNavigation();
-    const handleLeaguePress = (matchIdLeague, matchGroupName, matchLeagueName) => {
-        navigation.navigate('LeagueScreen', { matchIdLeague: matchIdLeague, matchGroupName: matchGroupName, matchLeagueName: matchLeagueName });
+    const handleLeaguePress = (idLeague, groupName = 'Grup', leagueName) => {
+        console.log("LL"+idLeague)
+        navigation.navigate('Leagues', { screen: 'LeagueScreen', params: { matchIdLeague: idLeague, matchGroupName: groupName, matchLeagueName: leagueName } });
     }
 
     return (
         <>
             <View style={styles.matchesListContainer}>
-                <View style={styles.matchesListContent}>
+                <View style={styles.matchesListContent} >
+                    <View style={{ fontFamily: 'Jost300Light', width: '100%', borderBottomWidth: 1, paddingBottom: 3, color: '#aaa', borderColor: '#aaa', marginBottom: 3 }}
+                    ><TouchableOpacity onPress={()=>{handleLeaguePress(matchIdLeague,matchGroupName,matchGroupName)}}>
+                            <Text style={{ width: '100%', fontFamily: 'Jost700Bold', color: '#424242', textAlign: 'left' }}>{matchGroupName}</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ width: '75%' }}>
                             <View style={{ padding: 2 }}>

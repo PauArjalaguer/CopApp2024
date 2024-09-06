@@ -3,12 +3,11 @@ import { View, Text, ScrollView, Dimensions, StyleSheet } from 'react-native'
 import { LeagueScreenList } from '../components/LeagueScreenList'
 const styles = require('../styles/stylesheet');
 export const LeagueScreen = ({ navigation, route }) => {
-    //console.log(route.params)
+    console.log(route.params.matchIdLeague)
     const matchIdLeague = route.params.matchIdLeague;
-    const matchGroupName = route.params.matchGroupName;
-    const matchLeagueName = route.params.matchLeagueName.toLowerCase();
+    const matchLeagueName = route.params.matchLeagueName;
     let h;
-    h = <LeagueScreenList matchIdLeague={matchIdLeague} matchGroupName={matchGroupName} ></LeagueScreenList>
+    h = <LeagueScreenList matchIdLeague={matchIdLeague}  ></LeagueScreenList>
     let deviceWidth = Dimensions.get('window').width;
     let imageHeight = deviceWidth / 2;
     return (

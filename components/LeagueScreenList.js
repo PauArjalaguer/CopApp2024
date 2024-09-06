@@ -8,7 +8,8 @@ import { LoadingComponent } from './LoadingComponent';
 import { Classification } from './Classification';
 import { LeagueMatches } from './LeagueMatches';
 
-export const LeagueScreenList = ({ matchIdLeague, matchGroupName }) => {
+export const LeagueScreenList = ({ matchIdLeague }) => {
+    
 
     let [isLoadingMatches, setIsLoadingMatches] = useState(true);
     let [matches, setMatches] = useState([]);

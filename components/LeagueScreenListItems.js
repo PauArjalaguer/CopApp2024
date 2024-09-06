@@ -5,20 +5,15 @@ const styles = require('../styles/stylesheet');
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { MatchContext } from '../context/MatchContext';
 const goToMap = (address) => {
+
     const url = Platform.select({
         ios: `maps:0,0?q=${address}`,
         android: `geo:0,0?q=${address}`,
     })
-    Linking.openURL(encodeURI(url))
+    //console.log(url);
+    Linking.openURL(encodeURI(url));
 }
-const gotoLink = (url) => {
-    const gurl = Platform.select({
-        ios: `maps:0,0?q=${url}`,
-        android: `geo:0,0?q=${url}`,
-    })
-   // Linking.openURL(encodeURI(gurl))
-   console.log(gurl)
-}
+
 
 function splitHour(string) {
     if (string) {
@@ -75,14 +70,14 @@ export const LeagueScreenListItems = ({ matchId, matchLocal, matchVisitor, match
 
     return (
         <View key={matchId}>
-            <View style={{ flex: 1, backgroundColor: '#41628b', alignItems: 'left', padding: 6, justifyContent: 'center', borderTopWidth: 1, borderColor: '#ccc', display: showFixture ? 'flex' : 'none' }} >
+            <View style={{ flex: 1,marginTop:5, backgroundColor: '#41628b', alignItems: 'left', padding: 6, justifyContent: 'center',   borderTopWidth: 1, borderColor: '#aca', display: showFixture ? 'flex' : 'none' }} >
                 <Text style={{ color: '#ffffff', fontFamily: 'Jost700Bold', fontWeight: 'bold', }}>Jornada {matchFixture}</Text>
             </View>
             <TouchableOpacity onPress={() => {
                 setState(state => ({ ...state, name: matchLocal + matchVisitor }))
 
             }}>
-                <View style={{ flexDirection: 'row', borderTopWidth: 1, borderRightWidth: 1, borderLeftWidth: 1, borderColor: '#ccc' }}>
+                <View style={{ flexDirection: 'row',  borderRightWidth: 1, borderLeftWidth: 1, borderColor: '#ccc', borderBottomWidth: 1, }}>
                     <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#fff', flexDirection: 'row', }}>
                         <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#fff' }}><Text style={styles.matchesListTeam}><Image source={{ uri: matchLocalImage }} style={styles.matchesListLogo} /></Text></View>
                         <View style={{ flex: 6, justifyContent: 'center', backgroundColor: '#fff' }}><Text style={styles.matchesListTeam}>{matchLocal.toLowerCase().substring(0, 17)}</Text></View>
@@ -99,7 +94,7 @@ export const LeagueScreenListItems = ({ matchId, matchLocal, matchVisitor, match
             </TouchableOpacity>
             <View style={{ flexDirection: 'row', borderTopWidth: 1, borderRightWidth: 1, borderLeftWidth: 1, borderColor: '#ccc', backgroundColor: '#fff', padding: 6, display: state.name == matchLocal + matchVisitor ? 'flex' : 'none' }}>
                 <View style={{ flex: 8 }}>
-                    <TouchableOpacity onPress={() => gotoLink(matchComplexAddress)}>
+                    <TouchableOpacity onPress={() => goToMap(matchComplexAddress)}>
                         <Text style={{ fontFamily: 'Jost500Medium', fontSize: 11, color: '#424242', textTransform: 'capitalize' }}>{matchComplexName.toLowerCase()}</Text>
                         {/* <Text style={{ fontFamily: 'Jost500Medium', fontSize: 11}}>{matchComplexAddress}</Text> */}
                         <Text style={{ fontFamily: 'Jost500Medium', fontSize: 11, color: '#626262', textAlign: 'left', width: '100%' }}>{matchesDistance} km | {minutesToHour(matchesTravelTime)} </Text>

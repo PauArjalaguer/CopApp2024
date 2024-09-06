@@ -9,29 +9,33 @@ module.exports = StyleSheet.create({
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
         overflow: 'hidden',
-        elevation:3
+        elevation: 3
     },
-    sectionTitleText: { overflow: 'hidden', width: '100%', fontFamily: 'Jost700Bold', fontSize: 18, backgroundColor: '#41628b', padding:10, color: '#fff', textTransform: 'capitalize' },
+    sectionTitleText: { overflow: 'hidden', width: '100%', fontFamily: 'Jost700Bold', fontSize: 18, backgroundColor: '#41628b', padding: 10, color: '#fff', textTransform: 'capitalize' },
     globalFlexStart: { alignSelf: 'flex-start' },
     globalFlexEnd: { alignSelf: 'flex-end' },
     scrollView: { paddingVertical: 5, },
 
     //home
-    homeScreenLeagueName: { flex: 1, fontFamily: 'Jost700Bold', elevation: 3, fontSize: 18, textAlign: 'center',  color: '#242424', 
-    textTransform: 'capitalize', textTransform:'uppercase', marginBottom:4, padding:15 },
+    homeScreenLeagueName: {
+        flex: 1, fontFamily: 'Jost700Bold', elevation: 3, fontSize: 18, textAlign: 'center', color: '#242424',
+        textTransform: 'capitalize', textTransform: 'uppercase', marginBottom: 4, padding: 15
+    },
     homeScreenMatchTeamsRow: { flex: 1, alignSelf: 'stretch', flexDirection: 'row', marginVertical: 0, },
-    homeScreenMatchTeam: { flex: 1, alignSelf: 'stretch', width: '50%', paddingHorizontal: 0, marginVertical: 10, alignItems:'center'},
-    homeScreenMatchTeamBorder: { borderLeftWidth: 1, borderLeftColor:'#ddd' },
-    homeScreenMatchTeamImage: { width: 100, height: 100, alignSelf:'center' },
-    homeScreenMatchTeamName: {  fontFamily: 'Jost700Bold', fontSize: 12, marginTop: 10 },
-    homeScreenMatchComplexName: { flex:3 ,  fontFamily: 'Jost500Medium', color: '#424242', fontSize: 12, textAlign: 'left', marginTop: 0 , paddingLeft: 15, textTransform:'capitalize'},
-    homeScreenMatchDate: { flex: 1, fontFamily: 'Jost500Medium', color: '#424242', fontSize: 10,  textAlign:'right',textAlign: 'right', marginBottom: 0,  
-    paddingTop: 0,  alignSelf: 'flex-end', paddingRight:15},
-    homeScreenMatchComplexAddress: { flex: 3, fontFamily: 'Jost300Light', color: '#626262', fontSize: 10, paddingLeft: 15,marginBottom:20, width:'80%' },
-   
+    homeScreenMatchTeam: { flex: 1, alignSelf: 'stretch', width: '50%', paddingHorizontal: 0, marginVertical: 10, alignItems: 'center' },
+    homeScreenMatchTeamBorder: { borderLeftWidth: 1, borderLeftColor: '#ddd' },
+    homeScreenMatchTeamImage: { width: 100, height: 100, alignSelf: 'center' },
+    homeScreenMatchTeamName: { fontFamily: 'Jost700Bold', fontSize: 12, marginTop: 10 },
+    homeScreenMatchComplexName: { flex: 3, fontFamily: 'Jost500Medium', color: '#424242', fontSize: 12, textAlign: 'left', marginTop: 0, paddingLeft: 15, textTransform: 'capitalize' },
+    homeScreenMatchDate: {
+        flex: 1, fontFamily: 'Jost500Medium', color: '#424242', fontSize: 10, textAlign: 'right', textAlign: 'right', marginBottom: 0,
+        paddingTop: 0, alignSelf: 'flex-end', paddingRight: 15
+    },
+    homeScreenMatchComplexAddress: { flex: 3, fontFamily: 'Jost300Light', color: '#626262', fontSize: 10, paddingLeft: 15, marginBottom: 20, width: '80%' },
+
 
     //newsList
-    newsListContainer: { marginBottom: 7, paddingHorizontal: 0, flex: 1, flexDirection: 'row', paddingLeft: 10, borderWidth: 1, borderColor: '#aaa', backgroundColor:'#fff', },
+    newsListContainer: { marginBottom: 7, paddingHorizontal: 0, flex: 1, flexDirection: 'row', paddingLeft: 10, borderWidth: 1, borderColor: '#aaa', backgroundColor: '#fff', },
     newsListTouchable: {
         width: '100%',
 
@@ -56,19 +60,19 @@ module.exports = StyleSheet.create({
     newsListInfo: { flex: 1, padding: 10, flexDirection: 'column', justifyContent: 'space-between' },
     newsListTitle: { fontFamily: 'Jost700Bold', fontSize: 15, color: '#42aa43', color: '#242424' },
     newsListSubtitle: { fontFamily: 'Jost400Book', fontSize: 12, color: '#42aa43', color: '#424242', marginTop: 5 },
-    newsDetailSubtitle: { fontFamily: 'Jost700Bold', fontSize: 16, color: '#42aa43', color: '#626262', marginTop: 15 , marginBottom:0},
+    newsDetailSubtitle: { fontFamily: 'Jost700Bold', fontSize: 16, color: '#42aa43', color: '#626262', marginTop: 15, marginBottom: 0 },
     newsListDate: { fontFamily: 'Jost300Light', textAlign: 'left', color: '#828282', alignItems: 'flex-start', fontSize: 12 },
     newsDetailContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-       /*  shadowColor: "#c00",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 3, */
+        /*  shadowColor: "#c00",
+         shadowOffset: {
+             width: 0,
+             height: 2,
+         },
+         shadowOpacity: 0.25,
+         shadowRadius: 3.84,
+         elevation: 3, */
         flexDirection: 'row',
         width: '100%',
         height: Dimensions.get('window').width / 2,
@@ -87,28 +91,28 @@ module.exports = StyleSheet.create({
 
     //teamsList
     teamsListContainer: {
-        paddingHorizontal: 4, marginBottom: 7, borderWidth: 1, borderColor: '#41628b', backgroundColor:'#ffffff'
+        paddingHorizontal: 4, marginBottom: 7, borderWidth: 1, borderColor: '#41628b', backgroundColor: '#ffffff'
     },
     teamsListContent: {
         flex: 1,
-        flexDirection: 'row', 
+        flexDirection: 'row',
         padding: 8,
-       alignItems:'center', 
-       
+        alignItems: 'center',
+
     },
-    teamsListText: { fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#41628b', fontWeight:'bold' },
+    teamsListText: { fontSize: 14, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize', color: '#41628b', fontWeight: 'bold' },
     teamsListImage: { width: 16, height: 16, alignItems: 'baseline' },
-    teamsLeagueListContainer: {  marginBottom: 7, borderWidth: 1, borderColor: '#41628b', },
+    teamsLeagueListContainer: { marginBottom: 7, borderWidth: 1, borderColor: '#41628b', },
     teamsLeagueListContent:
     {
         flex: 1,
-        flexDirection: 'row', 
+        flexDirection: 'row',
         padding: 8,
-       alignItems:'center', backgroundColor:'#ffffff'
+        alignItems: 'center', backgroundColor: '#ffffff'
 
     },
-    teamsLeagueListText: { fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#41628b', fontWeight:'bold'  },
-    teamsLeagueListTextInactive: {fontSize: 14 , textAlign: 'left',  fontFamily: 'Jost500Medium', textTransform: 'capitalize', color:'#828282', fontWeight:'bold' },
+    teamsLeagueListText: { fontSize: 14, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize', color: '#41628b', fontWeight: 'bold' },
+    teamsLeagueListTextInactive: { fontSize: 14, textAlign: 'left', fontFamily: 'Jost500Medium', textTransform: 'capitalize', color: '#828282', fontWeight: 'bold' },
     teamsPlayersListContainer: { paddingHorizontal: 5, paddingVertical: 5, width: '50%' },
     teamsPlayersListContainerSmall: { paddingHorizontal: 5, paddingVertical: 5, width: '100%' },
     teamsPlayersListContent:
@@ -119,14 +123,14 @@ module.exports = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 0.3,
         justifyContent: 'space-between', flexDirection: 'row',
-       
+
         paddingLeft: 30,
         paddingRight: 15,
         paddingVertical: 10,
 
     },
     teamsPlayersListNumberView: {
-        zIndex:999,
+        zIndex: 999,
         shadowOffset: { width: 1, height: 1 },
         shadowColor: 'black',
         shadowOpacity: 0.3,
@@ -134,8 +138,10 @@ module.exports = StyleSheet.create({
     },
     teamsPlayersListNumber: { textAlign: 'center', fontFamily: 'Jost700Bold', textTransform: 'capitalize', color: '#42aa43', fontSize: 12, },
 
-    teamsPlayersListText: { fontSize: 12, textAlign: 'right', fontFamily: 'Jost500Medium', textTransform: 'capitalize', width: '100%', 
-    textAlignVertical: 'bottom' },
+    teamsPlayersListText: {
+        fontSize: 12, textAlign: 'right', fontFamily: 'Jost500Medium', textTransform: 'capitalize', width: '100%',
+        textAlignVertical: 'bottom'
+    },
     teamsPlayersListDate: { textAlign: 'right', fontSize: 16 },
     teamPlayersListImage: {
         width: 64, height: 64,
@@ -145,18 +151,20 @@ module.exports = StyleSheet.create({
 
     },
     //matchesList
-    matchesListContainer: { flex: 1, alignItems: 'center', paddingVertical: 3, paddingHorizontal: 3, },
-  
-    matchesListContent: {
-        alignItems: 'center', borderRadius: 5, backgroundColor: '#fff', elevation: 3, shadowColor: "#bbb",  padding:6, marginBottom:4,
-        shadowOffset: {
+    matchesListContainer: {
+        flex: 1, alignItems: 'center', paddingVertical: 3, paddingHorizontal: 3, shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.45,
-        shadowRadius: 3.84,backgroundColor:'#fff', color:'#fff'
+        shadowRadius: 3.84, backgroundColor: '#fff',borderRadius: 5, marginBottom: 4,elevation: 3, shadowColor: "#bbb",
     },
-      
+
+    matchesListContent: {
+        padding: 6, width:'100%',
+        
+    },
+
     matchesListContentOlesa: {
         alignItems: 'center', borderRadius: 5, backgroundColor: '#fff', elevation: 3, shadowColor: "#000", padding: 10,
         shadowOffset: {
@@ -164,19 +172,19 @@ module.exports = StyleSheet.create({
             height: 2,
         },
         shadowOpacity: 0.45,
-        shadowRadius: 3.84,backgroundColor:'#fff', color:'#fff'
+        shadowRadius: 3.84, backgroundColor: '#fff', color: '#fff'
     },
     matchesListResultsColumn: { width: '15%', borderLeftWidth: 1, borderColor: '#dedede' },
-    
+
     matchesListResultsColumnEmpty: { width: '15%', borderLeftWidth: 0, borderColor: '#fff' },
- 
+
     matchesListResult: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, textAlign: 'center', padding: 0, paddingTop: 7 },
     matchesListTeam: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, marginLeft: 0, textTransform: 'capitalize' },
-    matchesListLogo: { width: 14, height: 14, alignItems: 'baseline'},
-    matchesListInfoContainer: { width: '100%', flex: 1, flexDirection: 'row' }, 
+    matchesListLogo: { width: 14, height: 14, alignItems: 'baseline' },
+    matchesListInfoContainer: { width: '100%', flex: 1, flexDirection: 'row' },
     matchesListInfoContent: { width: '100%', flex: 1, width: '100%', marginTop: 10, paddingTop: 5, borderTopWidth: 1, borderTopColor: '#eee', },
     matchesListLeagueName: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 14, textAlign: 'left', marginBottom: 10, textTransform: 'capitalize' },
-    matchesListComplexName: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 11, textAlign: 'left', marginTop: 0 ,  width:'75%',textTransform: 'capitalize'},
+    matchesListComplexName: { fontFamily: 'Jost500Medium', color: '#424242', fontSize: 11, textAlign: 'left', marginTop: 0, width: '75%', textTransform: 'capitalize' },
     matchesListComplexAddress: { fontFamily: 'Jost300Light', color: '#626262', fontSize: 11, textAlign: 'left', padding: 0, },
-    matchesListComplexDate: { fontFamily: 'Jost400Book', color: '#424242', fontSize: 10,  textAlign:'right',  width:'25%' }
+    matchesListComplexDate: { fontFamily: 'Jost400Book', color: '#424242', fontSize: 10, textAlign: 'right', width: '25%' }
 });

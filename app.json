@@ -50,12 +50,7 @@
           }
         }
       ],
-      "expo-font",
-      {
-        "fonts": [
-          "./assets/fonts/BostonRegular.otf"
-        ]
-      }
+      "expo-font"
     ]
   }
 }
