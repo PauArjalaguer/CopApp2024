@@ -9,7 +9,7 @@ export const LoadingComponent = ({ loadText, setReloadFunction }) => {
     return (
         <View
             style={{
-                flex: 1, backgroundColor: '#fff', width: '100%', flex: 1, flexDirection: 'row', elevation: 3, borderWidth: 1, borderColor: '#41628b',
+                flex: 1, backgroundColor: '#fff', width: '100%', flex: 1, flexDirection: 'row', elevation: 3, borderWidth: 1, borderColor: '#006e38',
                 shadowColor: "#000",
                 shadowOffset: {
                     width: 0,
@@ -20,10 +20,10 @@ export const LoadingComponent = ({ loadText, setReloadFunction }) => {
                 <Text style={{
                     borderRadius: 5, padding: 10, width: '99%',
                     shadowOpacity: 0.25,
-                    shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', paddingLeft: 15,
+                    shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#006e38', paddingLeft: 15,
                 }}>
 
-                    <FontAwesome5 name="futbol" style={{ padding: 18, color: '#41628b', height: 14, width: 14, alignSelf: 'flex-end', marginRight: 0, marginTop: -2 }} /> {loadText}
+                    <FontAwesome5 name="skating" style={{ padding: 18, color: '#006e38', height: 14, width: 14, alignSelf: 'flex-end', marginRight: 0, marginTop: -2 }} /> {loadText}
 
                 </Text>
             </View>
@@ -31,7 +31,7 @@ export const LoadingComponent = ({ loadText, setReloadFunction }) => {
             <View style={{ width: '25%', justifyContent: 'center', alignItems: 'flex-end', paddingRight: 20 }}>
                 <TouchableOpacity onPress={reload}>
                     <Text>
-                        <FontAwesome5 name="sync" style={{ padding: 18, color: '#41628b', height: 14, width: 14, alignSelf: 'flex-end', marginRight: 0, marginTop: -2 }} />
+                        <FontAwesome5 name="sync" style={{ padding: 18, color: '#006e38', height: 14, width: 14, alignSelf: 'flex-end', marginRight: 0, marginTop: -2 }} />
                     </Text>
                 </TouchableOpacity>
             </View> 

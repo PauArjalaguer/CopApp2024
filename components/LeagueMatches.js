@@ -14,31 +14,31 @@ export const LeagueMatches = ({ matches, isLoadingMatches }) => {
                     matches?.map(
                         n => {
                             let showFixture;
-                            if (idRound.current != n[6]) {
+                            if (idRound.current != n['fixture']) {
                                 showFixture = true;
                             } else {
                                 showFixture = false;
                             }
-                            idRound.current = n[6];
+                            idRound.current = n['fixture'];
                             return (<LeagueScreenListItems
                                 showFixture={showFixture}
-                                matchId={n[0]}
-                                matchLocal={n[1]}
-                                matchVisitor={n[2]}
-                                matchComplexName={n[3]}
-                                matchComplexAddress={n[16]}
-                                matchDate={n[4]}
-                                matchHour={n[5]}
-                                matchFixture={n[6]}
-                                matchLocalImage={n[7]} matchVisitorImage={n[8]}
-                                matchIdLeague={n[0]}
-                                matchLeagueName={n[9]}
-                                matchGroupName={n[9]}
-                                matchLocalResult={n[11]}
-                                matchVisitorResult={n[12]}
-                                matchesDistance={n[13]}
-                                matchesTravelTime={n[14]}
-                                matchMeteo={n[15]}
+                                matchId={n['matchid']}
+                                matchLocal={n['local']}
+                                matchVisitor={n['visitor']}
+                                matchComplexName={n['complexName']}
+                                matchComplexAddress={n['complexAddress']}
+                                matchDate={n['matchDate']}
+                                matchHour={n['matchHour']}
+                                matchFixture={n['fixture']}
+                                matchLocalImage={n['localImage']} matchVisitorImage={n['visitorImage']}
+                                matchIdLeague={n['matchid']}
+                                matchLeagueName={n['leagueName']}
+                                matchGroupName={n['groupName']}
+                                matchLocalResult={n['localResult']}
+                                matchVisitorResult={n['visitorResult']}
+                                matchesDistance={n['distance']}
+                                matchesTravelTime={n['travelTime']}
+                                matchMeteo={n['meteo']}
                             ></LeagueScreenListItems>);
                         }
                     )

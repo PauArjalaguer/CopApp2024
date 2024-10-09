@@ -6,6 +6,7 @@ export const LeagueScreen = ({ navigation, route }) => {
     console.log(route.params.matchIdLeague)
     const matchIdLeague = route.params.matchIdLeague;
     const matchLeagueName = route.params.matchLeagueName;
+    const matchGroupName = route.params.matchGroupName;
     let h;
     h = <LeagueScreenList matchIdLeague={matchIdLeague}  ></LeagueScreenList>
     let deviceWidth = Dimensions.get('window').width;
@@ -13,7 +14,7 @@ export const LeagueScreen = ({ navigation, route }) => {
     return (
         <>
             <View style={{ width: '97%',marginHorizontal:'auto', height: '99.5%', }}>
-                <Text style={styles.sectionTitleText}>{matchLeagueName}</Text>
+                <Text style={styles.sectionTitleText}>{matchGroupName} {matchLeagueName} </Text>
                 <ScrollView style={styles.container}>
                     {h}
                 </ScrollView>

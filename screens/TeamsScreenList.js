@@ -16,8 +16,7 @@ export const TeamsScreenList = () => {
                 <ScrollView style={styles.scrollView}>
                     {h}
                 </ScrollView>
-            </View>
-            
+            </View>            
         </>
     )
 }

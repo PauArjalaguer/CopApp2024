@@ -15,20 +15,11 @@ import { LeaguesScreen } from './screens/LeaguesScreen';
 import { createTable } from './functions/functions'
 
 export default function App() {
-  function wait(ms){
-    console.log("Començo a esperar")
-    var start = new Date().getTime();
-    var end = start;
-    while(end < start + ms) { 
-      end = new Date().getTime();
-   }
- }
+  const [videoVisible, setVideoVisible] = useState(true);
   const [loadTeamsStatus, setLoadTeamsStatus] = useState('Esperant dades')
   useEffect(() => {
-
     createTable();
-
-
+    setTimeout(() => { setVideoVisible(false) },10000);
   }, []);
   const navTheme = {
     colors: {
@@ -49,34 +40,33 @@ export default function App() {
 
   if (!fontsLoaded) {
     return (<><View style={{ backgroundColor: '#ffffff', height: '100%', justifyContent: 'center', alignContent: 'center' }}>
-    <View style={{ alignContent: 'center', alignItems: 'center', marginBottom: 50 }}>
-      {/*  <Image style={{ width: 200, height: 200, alignContent: 'center', justifyContent: 'center' }} source={require('./assets/images/appImages/gif.gif')} /> */}
+      <View style={{ alignContent: 'center', alignItems: 'center', marginBottom: 50 }}><Text>Carregant</Text>
+        {/*  <Image style={{ width: 200, height: 200, alignContent: 'center', justifyContent: 'center' }} source={require('./assets/images/appImages/gif.gif')} /> */}
 
-      <Video
-        source={require('./assets/images/appImages/intro.mp4')}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        resizeMode="cover"
-        shouldPlay
-       
-        style={{ width: "100%", aspectRatio:0.7 }}
-      />
 
-    </View></View></>)
-    {wait(1000)}
+
+      </View></View></>)
+
   } else {
     return (
-      <>
-        <StatusBar translucent backgroundColor="transparent" />
+      <><StatusBar translucent backgroundColor="transparent" />
+        <Video
+          source={require('./assets/images/appImages/intro.mp4')}
+          rate={1.0}
+          volume={1.0}
+          isMuted={false}
+          resizeMode="cover"
+          shouldPlay
+          style={{ width: "100%", aspectRatio: 0.7,  resizeMode: 'contain', display: videoVisible  ? '' : 'none'  }}
+        />
         <ImageBackground source={require('./assets/images/appImages/app_back.jpg')}
-          style={{ width: '100%', height: '100%', resizeMode: 'contain',  }}>
+          style={{ width: '100%', height: '100%', resizeMode: 'contain', display: videoVisible  ? 'none' : 'flex'  }}>
           <NavigationContainer theme={navTheme}>
             <View style={styles.header}>
               <View style={{ flex: 1, flexDirection: 'column', paddingTop: 34 }}>
                 <Text style={styles.headerText}>
                   <Image style={styles.headerImage} source={require('./assets/images/appImages/logo.png')} />
-                  &nbsp; E.F.S. Masquefa &nbsp;
+                  &nbsp; Club Olesa Patí &nbsp;
                   <Image style={styles.headerImage} source={require('./assets/images/appImages/logo.png')} />
                 </Text>
               </View>
@@ -84,8 +74,8 @@ export default function App() {
             <Tab.Navigator
               initialRouteName="Home"
               inactiveColor="#646464"
-              activeColor="#41628b"
-              barStyle={{ backgroundColor: '#fff', paddingTop:0, color: 'white', borderTopWidth: 1, borderTopColor: '#41628b', height: '11%' }}
+              activeColor="#006e38"
+              barStyle={{ backgroundColor: '#fff', paddingTop: 0, color: 'white', borderTopWidth: 1, borderTopColor: '#006e38', height: '11%' }}
               screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, size, color }) => {
                   let iconName;
@@ -93,7 +83,7 @@ export default function App() {
                     iconName = 'home';
                     size = 20
                   } else if (route.name === "Matches") {
-                    iconName = 'futbol';
+                    iconName = 'skating';
                     size = 20
                   }
                   else if (route.name === "News") {
@@ -175,6 +165,6 @@ const styles = StyleSheet.create({
   },
   tab: {},
 
-  tabBarLabel: { fontFamily: 'Jost700Bold', color: '#41628b', fontSize: 10, textTransform: 'uppercase' }
+  tabBarLabel: { fontFamily: 'Jost700Bold', color: '#006e38', fontSize: 10, textTransform: 'uppercase' }
 
 });

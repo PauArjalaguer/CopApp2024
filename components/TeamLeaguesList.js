@@ -15,9 +15,10 @@ export const TeamLeaguesList = ({ idTeam, teamName }) => {
     let [reload, setReload] = useState(0);
     const fetchLeaguesData = async () => {
         console.log("-" + idTeam);
-        query = "select idGroup, groupName from groups where idGroup in(select distinct idGroup from  matches where (idLocal ="+idTeam+"))";
+        query = "https://clubolesapati.cat/API/apiLligues.php?top=1&idTeam=" + idTeam;
+
         params = [];
-        let response = http_query(query, params).then((res) => { setItems(res[0].results.rows); });
+        let response = http_query(query, params).then((res) => { setItems(res); });
        
     }
     useEffect(() => {
@@ -31,13 +32,13 @@ export const TeamLeaguesList = ({ idTeam, teamName }) => {
             <>
                 {items.map(
                     n => (
-                        <TouchableOpacity key={n[0] + "_" + n[1]}
+                        <TouchableOpacity key={n['idLeague'] + "_" + n['leagueName']}
                             onPress={() => {
-                                handleLeaguePress(n[0], n.groupName, n.leagueName)
+                                handleLeaguePress(n['idLeague'], n.groupName, n.leagueName)
                             }}>
                             <View style={styles.teamsLeagueListContainer}>
                                 <View style={styles.teamsLeagueListContent}>
-                                    <Text style={styles.teamsLeagueListText}> {n[1]}</Text>
+                                    <Text style={styles.teamsLeagueListText}> {n['leagueName']} {n['groupName']}</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>

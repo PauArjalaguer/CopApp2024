@@ -29,13 +29,13 @@ export const TeamScreen = ({ navigation, route }) => {
             <Text style={styles.sectionTitleText}>Competició</Text>
           </View>
           {h}
-        {/*  <View style={styles.sectionTitle}>
+         <View style={styles.sectionTitle}>
             <Text style={styles.sectionTitleText}>Jugadors</Text>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', width: '100%', flexWrap: 'wrap', padding: 5 }}>
             {p}
           </View>
-*/}
+
           <View><Text> </Text></View>
           <View><Text> </Text></View>
           <View><Text> </Text></View>

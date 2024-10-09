@@ -4,11 +4,10 @@ import * as SQLite from 'expo-sqlite/legacy';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { http_query } from '../functions/http';
+import { LoadingComponent } from './LoadingComponent';
 const styles = require('../styles/stylesheet');
 
 const db = SQLite.openDatabase('db.FCFapp')
-const url = 'https://jokcatfs-pauarjalaguer.turso.io/';
-const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjQ1MTcwNjYsImlkIjoiZjI3NmQ3NmUtMjA1My00ZmJhLWI2MTgtMGQyZGZkN2E3NDEzIn0.vGKIODWyeqUw-YY-XdW6jEUeRUSyFdevSdimkQ0bpIIghhEbrXsHUVdDMXUBWwCHFHYtBwWixlv_JqQVzuDoCQ";
 
 export const LeaguesList = () => {
     const navigation = useNavigation();
@@ -30,10 +29,10 @@ export const LeaguesList = () => {
     }
     const fetchLeaguesData = async (string) => {
         string = removeLastComma(string);
-        console.log(string);
-        query = "select idGroup, groupName from groups where idGroup in(select distinct idGroup from  matches where (idLocal in(" + string + ")));";
+       // console.log(string);
+        query = "https://clubolesapati.cat/API/apiLligues.php?app=1&idTeam="+string;
         params = [];
-        let response = http_query(query, params).then((res) => { setLeagues(res[0].results.rows); setIsLoading(false); });
+        let response = http_query(query, params).then((res) => { setLeagues(res); setIsLoading(false); });
 
     }
     useEffect(() => {
@@ -61,29 +60,20 @@ export const LeaguesList = () => {
     if (items) {
         return (
             <>
-                {isLoading ? <View style={{ width: '100%', flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{
-                    borderRadius: 5, backgroundColor: '#fff', padding: 4, width: '99%', margin: 5, marginTop: 5, marginBottom: 5, elevation: 3,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84, fontFamily: 'Jost500Medium', color: '#424242', padding: 10,
-                }}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#001fbc', fontSize: 16 }} />  Carregant dades</Text></View> : null}
+                {isLoading ? <LoadingComponent loadText='Carregant dades' /> : null}
                 {leagues?.map(
                     n =>
-                    (<TouchableOpacity key={n[0] + "_" + n[1] + "_" + n[1]}
+                    (<TouchableOpacity key={n['idLeague'] + "_" + n['leagueName'] + "_" + n['groupName']}
                         onPress={() => {
-                            handleLeaguePress(n[0], n[1], n[1])
+                            handleLeaguePress(n['idLeague'], n['leagueName'], n['groupName'])
                         }}>
                         <View style={styles.teamsLeagueListContainer}>
                             <View style={styles.teamsLeagueListContent}>
 
                                 {n.isActive == 1 ?
-                                    <Text style={styles.teamsLeagueListText}>  <FontAwesome5 name="futbol" style={{ color: '#41628b', fontSize: 12 }} /> {n[0]} {n[1]} </Text>
+                                    <Text style={styles.teamsLeagueListText}>  <FontAwesome5 name="skating" style={{ color: '#006e38', fontSize: 12 }} />  {n['leagueName']} {n['groupName']} </Text>
                                     :
-                                    <Text style={styles.teamsLeagueListText}>  <FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 12 }} /> {n[1]} {n.groupName} </Text>
+                                    <Text style={styles.teamsLeagueListText}>  <FontAwesome5 name="skating" style={{ padding: 8, color: '#006e38', fontSize: 12 }} /> {n['leagueName']} {n['groupName']} </Text>
                                 }
                             </View>
                         </View>

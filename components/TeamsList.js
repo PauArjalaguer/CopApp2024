@@ -10,9 +10,6 @@ const db = SQLite.openDatabase('db.FCFapp')
 const styles = require('../styles/stylesheet');
 export const TeamsList = () => {
 
-  const url = 'https://jokcatfs-pauarjalaguer.turso.io/';
-  const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjQ1MTcwNjYsImlkIjoiZjI3NmQ3NmUtMjA1My00ZmJhLWI2MTgtMGQyZGZkN2E3NDEzIn0.vGKIODWyeqUw-YY-XdW6jEUeRUSyFdevSdimkQ0bpIIghhEbrXsHUVdDMXUBWwCHFHYtBwWixlv_JqQVzuDoCQ";
-
   const navigation = useNavigation();
   const handleTeamPress = (idTeam, teamName, link) => {
 
@@ -53,18 +50,20 @@ export const TeamsList = () => {
   }
 
   const axiosCallback = async (tString) => {
-    query = "select teamId as idTeam, teamName, teamAcronym from teams where idClub=1";
+    query = "https://clubolesapati.cat/API/apiEquips.php?tString=s"+tString;
+
     params = [];
     let response = http_query(query, params).then((res) => {
       setProcessedTeams([]);
      
-      res[0].results.rows.map((m, index) => {
+      res.map((m, index) => {
         let isActive = 0;
         if (tString.search(m[0]) >= 0) {          
           isActive = 1;
         }
-        setProcessedTeams(processedTeams => [...processedTeams, { 'idTeam': m[0], 'teamName': m[1], 'isActive': isActive }]);
+        setProcessedTeams(processedTeams => [...processedTeams, { 'idTeam': m['teamId'], 'teamName': m['teamName'], 'isActive': m['isActive'] }]);
       })
+     
       setIsLoading(false);
     });
 
@@ -98,7 +97,7 @@ export const TeamsList = () => {
                     handleTeamPress(n.idTeam, n.teamName, n.link)
                   }}>
                   <View >
-                    <Text style={styles.teamsListText}><FontAwesome5 name="futbol" style={{ padding: 8, color: '#41628b', fontSize: 12 }} /> {n.teamName}  <Text style={{ textTransform: 'uppercase', color: '#828282', fontSize: 9 }}> </Text>
+                    <Text style={styles.teamsListText}><FontAwesome5 name="skating" style={{ padding: 8, color: '#006e38', fontSize: 12 }} /> {n.teamName}  <Text style={{ textTransform: 'uppercase', color: '#828282', fontSize: 9 }}> </Text>
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -108,7 +107,7 @@ export const TeamsList = () => {
                     onPress={() => {
                       changeTeamStatusTeamPress(n.idTeam, n.isActive)
                     }}>
-                    <FontAwesome5 name={n.isActive == 1 ? 'toggle-on' : 'toggle-off'} size={20} color='#41628b' style={{ padding: 0 }} />
+                    <FontAwesome5 name={n.isActive == 1 ? 'toggle-on' : 'toggle-off'} size={20} color='#006e38' style={{ padding: 0 }} />
                   </TouchableOpacity>
                 </View>
               </View>

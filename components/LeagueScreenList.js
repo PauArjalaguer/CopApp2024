@@ -21,14 +21,16 @@ export const LeagueScreenList = ({ matchIdLeague }) => {
     let [reload, setReload] = useState(0);
     const [state, setState] = useContext(MatchContext);
     const fetchClassificationData = async (matchIdLeague) => {
-        query = "SELECT  position,  teamName,  points,  played,  won,  draw,  lost,  goalsmade,  goalsreceived FROM classification where idLeague=771";
+        query = "https://clubolesapati.cat/API/apiClassificacionsPerId.php?top=1&idLeague=" + matchIdLeague;
         params = [];
-        let response = http_query(query, params).then((res) => { setClassification(res[0].results.rows); setIsLoadingClass(false); });
+        let response = http_query(query, params).then((res) => { setClassification(res); setIsLoadingClass(false); });
     }
     const fetchMatchesData = async (matchIdLeague) => {
-        query = "select  idMatch,localName, visitorName, place,matchDate, matchHour, idRound, localImage,visitorImage, groupName, groupName, localResult, visitorResult, distance,travelTime,meteo,coordinates from matches m join groups g on g.idGroup=m.idGroup where g.idGroup =" + matchIdLeague
+        query = "https://clubolesapati.cat/API/apiTotsElsPartits.php?top=1&idLeague=" + matchIdLeague+"&orderByRound=1";
+        
+
         params = [];
-        let response = http_query(query, params).then((res) => { setMatches(res[0].results.rows); setIsLoadingMatches(false); });
+        let response = http_query(query, params).then((res) => { setMatches(res);  setIsLoadingMatches(false); });
     }
 
     useEffect(() => {
@@ -40,7 +42,7 @@ export const LeagueScreenList = ({ matchIdLeague }) => {
     if (matches && classification) {
         return (
             <>
-                {isLoadingClass ? <LoadingComponent loadText='Carregant classificaci'></LoadingComponent> : null}
+                {isLoadingClass ? <LoadingComponent loadText='Carregant classificació'></LoadingComponent> : null}
                 <Classification classification={classification} isLoadingClass={isLoadingClass} setVisibleClassification={setVisibleClassification} visibleClassification={visibleClassification} />
 
                 {isLoadingMatches ? <LoadingComponent loadText='Carregant partits'></LoadingComponent> : null}

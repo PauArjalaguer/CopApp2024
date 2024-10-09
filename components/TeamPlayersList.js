@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Image, Text, View, Dimensions } from 'react-native'
-import * as SQLite from 'expo-sqlite';
+import { http_query } from '../functions/http';
 const styles = require('../styles/stylesheet');
-export const TeamPlayersList = ({ idTeam,teamName, teamLink }) => {
+export const TeamPlayersList = ({ idTeam, teamName, teamLink }) => {
     let itemsArray = [];
     let [items, setItems] = useState([]);
     let [reload, setReload] = useState();
-    const fetchPlayersData = () => {       
-        fetch("http://jok.cat/API/teamUrlToJson.php?url="+teamLink)
-            .then(response => {
-                console.log(response)
-                return response.json()
-            })
-            .then(data => {
-                setItems(data);
-              //  console.log(data);
-            })
+    const fetchPlayersData = () => {
+
+        query = "https://clubolesapati.cat/API/apiEquip.php?top=1&idTeam=" + idTeam
+        console.log(query);
+
+        params = [];
+        let response = http_query(query, params).then((res) => { setItems(res);  });
     }
     useEffect(() => {
         fetchPlayersData();
@@ -44,7 +41,7 @@ export const TeamPlayersList = ({ idTeam,teamName, teamLink }) => {
 
                             <View style={styles.teamsPlayersListContent}>
                                 <View style={styles.teamsPlayersListNumberView}><Text style={styles.teamsPlayersListNumber}>{n.number}</Text></View>
-                                <Image source={{ uri: "http://clubolesapati.cat/images/dynamic/playersImages/blank.png"}} style={styles.teamPlayersListImage} ></Image>
+                                <Image source={{ uri: "https://clubolesapati.cat/images/dynamic/playersImages/"+n.image }} style={styles.teamPlayersListImage} ></Image>
                                 <View>
                                     <Text style={styles.teamsPlayersListText}>{n.playerName}</Text>
                                     <Text style={styles.teamsPlayersListDate}>{n.birthdate}</Text>

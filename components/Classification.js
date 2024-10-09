@@ -16,9 +16,9 @@ export const Classification = ({ classification, isLoadingClass, setVisibleClass
                 },
 
             }}>
-                <View style={{ flex: 1, flexDirection: 'row', }}>
-                    <View style={{ flex: 7 }}>
-                        <Text style={{ fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 2 }}>Classificació </Text>
+                <View style={{ flex: 1, flexDirection: 'row', backgroundColor:'#006e38'}}>
+                    <View style={{   }}>
+                        <Text style={{ fontFamily: 'Jost700Bold', color: '#fff', padding: 10, fontSize: 14}}>Classificació </Text>
                     </View>
                     <View style={{ flex: 1, alignSelf: 'flex-start', alignItems: 'flex-end', }}>
                         <Text style={{ flex: 1, textAlign: 'left', paddingRight: 10, fontFamily: 'Jost700Bold', color: '#424242', padding: 10, fontSize: 12, flex: 1 }}>

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "E.F.S. Masquefa",
-    "slug": "efs_masquefa",
-    "version": "1.0.0",
+    "name": "Club Olesa Patí",
+    "slug": "COPOlesa",
+    "version": "2.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,22 +16,18 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "efsmasquefa"
+      "bundleIdentifier": "com.cop.olesapati",
+      "ios.buildNumber" : 36
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.pauarjalaguer.efs_masquefa"
+      "package": "com.cop.olesapati_2024"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "70f7a0c3-50e5-4430-80a1-64be840fc9a6"
-      }
     },
     "plugins": [
       [
@@ -42,6 +38,7 @@
           },
           "ios": {
             "infoPlist": {
+
               "NSAppTransportSecurity": {
                 "NSAllowsArbitraryLoads": true
               }
@@ -51,6 +48,11 @@
         }
       ],
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d54fdc92-f81a-4868-9daa-6e39387a0bb4"
+      }
+    }
   }
 }
